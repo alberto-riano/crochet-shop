@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tienda{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Tienda</h1>
+        <p class="page-subtitle">Descubre todas nuestras creaciones artesanales</p>
+    </div>
+</section>
+
+<section class="shop-section">
+    <div class="container">
+        <!-- Category filter -->
+        <div class="shop-filters animate-on-scroll">
+            <a href="{% url 'products:shop' %}" class="filter-btn {% if not selected_category %}active{% endif %}">Todas</a>
+            {% for cat in categories %}
+            <a href="{% url 'products:shop' %}?category={{ cat.slug }}" class="filter-btn {% if selected_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+
+        <!-- Products grid -->
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card animate-on-scroll">
+                    <a href="{% url 'products:detail' product.slug %}">
+                        <div class="product-card-image">
+                            {% if product.cover_image %}
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" class="product-img-main">
+                            {% if product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-img-hover">
+                            {% endif %}
+                            {% else %}
+                            <div class="product-placeholder">
+                                <i class="fas fa-yarn"></i>
+                            </div>
+                            {% endif %}
+                            {% if product.is_customizable %}
+                            <span class="badge-customizable">Personalizable</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-card-body">
+                            <span class="product-card-category">{{ product.category.name }}</span>
+                            <h3 class="product-card-title">{{ product.name }}</h3>
+                            <p class="product-card-price">Desde {{ product.min_price }}€</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-yarn fa-3x text-muted mb-3"></i>
+                <p class="text-muted fs-5">No hay productos en esta categoría todavía.</p>
+                <a href="{% url 'products:shop' %}" class="btn btn-outline-primary">Ver todos los productos</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

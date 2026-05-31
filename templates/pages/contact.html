@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Contacto</h1>
+        <p class="page-subtitle">¿Tienes alguna pregunta? Escríbenos y te respondemos encantadas</p>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-7">
+                <div class="contact-form-wrapper animate-on-scroll">
+                    <h2>Envíanos un mensaje</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                            <i class="fas fa-paper-plane me-2"></i>Enviar mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="contact-info animate-on-scroll">
+                    <h3>Otras formas de contacto</h3>
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <p>hola@lazadas.es</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fab fa-instagram"></i>
+                        <div>
+                            <strong>Instagram</strong>
+                            <p>@lazadas_crochet</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Tiempo de respuesta</strong>
+                            <p>Normalmente respondemos en 24-48 horas</p>
+                        </div>
+                    </div>
+                    <div class="contact-note">
+                        <p><i class="fas fa-heart me-2"></i>Si tienes una idea para un encargo especial, no dudes en contárnosla. ¡Nos encanta hacer realidad proyectos creativos!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

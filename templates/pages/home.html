@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <h1 class="hero-title animate-fade-in">Creaciones únicas<br>hechas con amor y hilo</h1>
+        <p class="hero-subtitle animate-fade-in-delay">Piezas de crochet artesanales, diseñadas y tejidas a mano con dedicación y mimo</p>
+        <a href="{% url 'products:shop' %}" class="btn btn-hero animate-fade-in-delay-2">Explorar la tienda</a>
+    </div>
+</section>
+
+<!-- Novedades -->
+<section class="section-latest">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Novedades</h2>
+            <p class="section-subtitle">Las últimas creaciones salidas de nuestras agujas</p>
+        </div>
+        <div class="row g-4">
+            {% for product in latest_products %}
+            <div class="col-6 col-md-3">
+                <div class="product-card animate-on-scroll">
+                    <a href="{% url 'products:detail' product.slug %}">
+                        <div class="product-card-image">
+                            {% if product.cover_image %}
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                            <div class="product-placeholder">
+                                <i class="fas fa-yarn"></i>
+                            </div>
+                            {% endif %}
+                            {% if product.is_customizable %}
+                            <span class="badge-customizable">Personalizable</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-card-body">
+                            <h3 class="product-card-title">{{ product.name }}</h3>
+                            <p class="product-card-price">Desde {{ product.min_price }}€</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Próximamente nuevas creaciones...</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'products:shop' %}" class="btn btn-outline-primary btn-lg">Ver toda la tienda</a>
+        </div>
+    </div>
+</section>
+
+<!-- Cómo funciona -->
+<section class="section-how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">¿Cómo funciona?</h2>
+            <p class="section-subtitle">Dos formas de disfrutar de nuestras creaciones</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="how-card animate-on-scroll">
+                    <div class="how-card-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>🧶 Encargo personalizado</h3>
+                    <p>Elige tu pieza favorita y personalízala a tu gusto: colores, nombre bordado, tamaño... Paula lo tejará a mano con todo el cariño. Cada creación es única, como tú.</p>
+                    <ul class="how-list">
+                        <li><i class="fas fa-check"></i> Pieza terminada y lista para usar</li>
+                        <li><i class="fas fa-check"></i> Personalización de colores y detalles</li>
+                        <li><i class="fas fa-check"></i> Hecho a mano con materiales premium</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="how-card animate-on-scroll">
+                    <div class="how-card-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3>📦 Pack DIY</h3>
+                    <p>¿Prefieres tejerlo tú? Recibe todos los materiales necesarios, el patrón en PDF y un código QR con acceso al vídeo tutorial exclusivo paso a paso.</p>
+                    <ul class="how-list">
+                        <li><i class="fas fa-check"></i> Todos los materiales incluidos</li>
+                        <li><i class="fas fa-check"></i> Patrón impreso + PDF digital</li>
+                        <li><i class="fas fa-check"></i> Vídeo tutorial privado con QR</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonios -->
+<section class="section-testimonials">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Lo que dicen nuestras clientas</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Le pedí un amigurumi personalizado para mi hija y quedó precioso. Se nota el cariño y la calidad en cada puntada. ¡Repetiré seguro!"</p>
+                    <p class="testimonial-author">— María García</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"El pack DIY es genial. Viene todo perfectamente organizado y el vídeo tutorial es súper claro. He hecho mi primer bolso de crochet gracias a Paula."</p>
+                    <p class="testimonial-author">— Laura Fernández</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Regalé un bolso personalizado a mi madre y lloró de la emoción. La atención de Paula fue increíble, pendiente de cada detalle."</p>
+                    <p class="testimonial-author">— Carmen López</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

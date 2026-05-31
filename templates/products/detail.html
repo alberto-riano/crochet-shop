@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="product-detail-section">
+    <div class="container">
+        <nav class="breadcrumb-nav">
+            <a href="{% url 'products:shop' %}">Tienda</a>
+            <span>/</span>
+            <a href="{% url 'products:shop' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+            <span>/</span>
+            <span>{{ product.name }}</span>
+        </nav>
+
+        <div class="row g-5">
+            <!-- Gallery -->
+            <div class="col-md-6">
+                <div class="product-gallery animate-on-scroll">
+                    <div class="gallery-main">
+                        {% if product.cover_image %}
+                        <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" id="mainImage" class="gallery-main-img" onclick="openLightbox(this.src)">
+                        {% else %}
+                        <div class="product-placeholder-lg">
+                            <i class="fas fa-yarn fa-4x"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if product.images.all %}
+                    <div class="gallery-thumbs">
+                        <div class="thumb active" onclick="changeImage('{{ product.cover_image.url }}', this)">
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}">
+                        </div>
+                        {% for img in product.images.all %}
+                        <div class="thumb" onclick="changeImage('{{ img.image.url }}', this)">
+                            <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product info -->
+            <div class="col-md-6">
+                <div class="product-info animate-on-scroll">
+                    <span class="product-category-badge">{{ product.category.name }}</span>
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    <div class="product-description">
+                        {{ product.description|linebreaks }}
+                    </div>
+
+                    <!-- Option 1: Custom Order -->
+                    <div class="purchase-option">
+                        <div class="purchase-option-header">
+                            <h3>🧶 Pedir por encargo</h3>
+                            <span class="purchase-price">{{ product.price_custom_order }}€</span>
+                        </div>
+                        <p class="purchase-description">Pieza terminada, tejida a mano especialmente para ti.</p>
+                        <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_type" value="custom_order">
+                            {% if product.is_customizable and product.colors_list %}
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Color</label>
+                                <select name="color" class="form-select">
+                                    {% for color in product.colors_list %}
+                                    <option value="{{ color }}">{{ color }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+                            {% if product.is_customizable %}
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Personalización</label>
+                                <input type="text" name="custom_notes" class="form-control" placeholder="Ej: nombre a bordar, detalles especiales...">
+                            </div>
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-shopping-bag me-2"></i>Añadir al carrito
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Option 2: DIY Kit -->
+                    <div class="purchase-option purchase-option-kit">
+                        <div class="purchase-option-header">
+                            <h3>📦 Pack DIY</h3>
+                            <span class="purchase-price">{{ product.price_kit }}€</span>
+                        </div>
+                        <p class="purchase-description">Materiales + patrón PDF + vídeo tutorial exclusivo con QR.</p>
+                        {% if product.qr_code %}
+                        <div class="qr-preview mb-3">
+                            <img src="{{ product.qr_code.url }}" alt="QR del vídeo tutorial" class="qr-image">
+                            <small class="text-muted">Preview del QR incluido en el pack</small>
+                        </div>
+                        {% endif %}
+                        <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_type" value="kit">
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-box-open me-2"></i>Añadir Pack DIY al carrito
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related products -->
+        {% if related_products %}
+        <div class="related-products">
+            <h2 class="section-title">También te puede gustar</h2>
+            <div class="row g-4">
+                {% for rp in related_products %}
+                <div class="col-6 col-md-3">
+                    <div class="product-card animate-on-scroll">
+                        <a href="{% url 'products:detail' rp.slug %}">
+                            <div class="product-card-image">
+                                {% if rp.cover_image %}
+                                <img src="{{ rp.cover_image.url }}" alt="{{ rp.name }}">
+                                {% else %}
+                                <div class="product-placeholder"><i class="fas fa-yarn"></i></div>
+                                {% endif %}
+                            </div>
+                            <div class="product-card-body">
+                                <h3 class="product-card-title">{{ rp.name }}</h3>
+                                <p class="product-card-price">Desde {{ rp.min_price }}€</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img src="" alt="Product image" id="lightboxImg">
+    <button class="lightbox-close">&times;</button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changeImage(src, el) {
+    document.getElementById('mainImage').src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Pedido confirmado{% endblock %}
+
+{% block content %}
+<section class="confirmation-section">
+    <div class="container">
+        <div class="confirmation-card animate-on-scroll">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>¡Pedido recibido!</h1>
+            <p class="confirmation-subtitle">Paula se pondrá en contacto contigo para confirmar los detalles y coordinar el envío.</p>
+
+            <div class="confirmation-details">
+                <div class="confirmation-ref">
+                    <span>Referencia del pedido</span>
+                    <strong>#{{ order.reference }}</strong>
+                </div>
+
+                <div class="confirmation-info">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <p><strong>Nombre:</strong> {{ order.customer_name }}</p>
+                            <p><strong>Email:</strong> {{ order.customer_email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Teléfono:</strong> {{ order.customer_phone }}</p>
+                            <p><strong>Método de pago:</strong> {{ order.get_payment_method_display }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Artículos</h3>
+                {% for item in order.items.all %}
+                <div class="confirmation-item">
+                    <span>{{ item.product_name }} ({{ item.get_order_type_display }}) × {{ item.quantity }}</span>
+                    <span>{{ item.subtotal }}€</span>
+                </div>
+                {% endfor %}
+                <hr>
+                <div class="confirmation-total">
+                    <span>Total</span>
+                    <span>{{ order.total_price }}€</span>
+                </div>
+            </div>
+
+            <div class="confirmation-actions">
+                <a href="{% url 'products:shop' %}" class="btn btn-primary">Volver a la tienda</a>
+                <a href="{% url 'pages:home' %}" class="btn btn-outline-primary">Ir al inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
