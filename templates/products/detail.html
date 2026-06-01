@@ -46,18 +46,25 @@
             <div class="col-md-6">
                 <div class="product-info animate-on-scroll">
                     <span class="product-category-badge">{{ product.category.name }}</span>
+                    <span class="product-id-badge">Ref: {{ product.product_id }}</span>
                     <h1 class="product-title">{{ product.name }}</h1>
                     <div class="product-description">
                         {{ product.description|linebreaks }}
                     </div>
 
-                    <!-- Option 1: Custom Order -->
+                    <!-- Price display -->
+                    <div class="product-price-block">
+                        {% if product.is_on_sale %}
+                        <span class="price-original">{{ product.price }}€</span>
+                        <span class="price-current price-sale">{{ product.discount_price }}€</span>
+                        <span class="badge-sale">Oferta</span>
+                        {% else %}
+                        <span class="price-current">{{ product.price }}€</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add to cart -->
                     <div class="purchase-option">
-                        <div class="purchase-option-header">
-                            <h3>🧶 Pedir por encargo</h3>
-                            <span class="purchase-price">{{ product.price_custom_order }}€</span>
-                        </div>
-                        <p class="purchase-description">Pieza terminada, tejida a mano especialmente para ti.</p>
                         <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
                             {% csrf_token %}
                             <input type="hidden" name="order_type" value="custom_order">
@@ -79,28 +86,6 @@
                             {% endif %}
                             <button type="submit" class="btn btn-primary w-100">
                                 <i class="fas fa-shopping-bag me-2"></i>Añadir al carrito
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Option 2: DIY Kit -->
-                    <div class="purchase-option purchase-option-kit">
-                        <div class="purchase-option-header">
-                            <h3>📦 Pack DIY</h3>
-                            <span class="purchase-price">{{ product.price_kit }}€</span>
-                        </div>
-                        <p class="purchase-description">Materiales + patrón PDF + vídeo tutorial exclusivo con QR.</p>
-                        {% if product.qr_code %}
-                        <div class="qr-preview mb-3">
-                            <img src="{{ product.qr_code.url }}" alt="QR del vídeo tutorial" class="qr-image">
-                            <small class="text-muted">Preview del QR incluido en el pack</small>
-                        </div>
-                        {% endif %}
-                        <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="order_type" value="kit">
-                            <button type="submit" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-box-open me-2"></i>Añadir Pack DIY al carrito
                             </button>
                         </form>
                     </div>
@@ -126,7 +111,14 @@
                             </div>
                             <div class="product-card-body">
                                 <h3 class="product-card-title">{{ rp.name }}</h3>
-                                <p class="product-card-price">Desde {{ rp.min_price }}€</p>
+                                <div class="product-card-price">
+                                    {% if rp.is_on_sale %}
+                                    <span class="price-original-sm">{{ rp.price }}€</span>
+                                    <span class="price-sale-sm">{{ rp.discount_price }}€</span>
+                                    {% else %}
+                                    {{ rp.price }}€
+                                    {% endif %}
+                                </div>
                             </div>
                         </a>
                     </div>

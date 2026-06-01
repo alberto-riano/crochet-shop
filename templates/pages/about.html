@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sobre nosotras{% endblock %}
+{% block title %}Sobre nosotros{% endblock %}
 
 {% block content %}
 <section class="page-header">
     <div class="container">
-        <h1 class="page-title">Sobre nosotras</h1>
+        <h1 class="page-title">Sobre nosotros</h1>
         <p class="page-subtitle">La historia detrás de cada puntada</p>
     </div>
 </section>
@@ -16,10 +16,7 @@
         <div class="row align-items-center g-5">
             <div class="col-md-6">
                 <div class="about-image-wrapper animate-on-scroll">
-                    <div class="about-image-placeholder">
-                        <i class="fas fa-heart fa-3x"></i>
-                        <p>Paula Miles Uribe</p>
-                    </div>
+                    <img src="{{ MEDIA_URL }}about/Paula_Miles_Uribe.jpg" alt="Paula Miles Uribe" class="about-photo">
                 </div>
             </div>
             <div class="col-md-6">
@@ -28,8 +25,8 @@
                     <p class="about-role">Artesana & Creadora</p>
                     <p>Desde que era pequeña, siempre tuve un ovillo de hilo entre las manos. Lo que empezó como un hobby heredado de mi abuela se convirtió en mi pasión y mi forma de expresión artística.</p>
                     <p>Cada pieza que creo lleva un pedacito de mi corazón. Me encanta la idea de que algo hecho con mis manos pueda alegrar el día a alguien, decorar un hogar o convertirse en el regalo perfecto.</p>
-                    <p>En <strong>Lazadas</strong>, cada creación es única. No trabajo con moldes ni producciones en serie: cada puntada está pensada, cada color elegido con mimo, y cada pieza terminada con el orgullo de saber que es irrepetible.</p>
-                    <p>Ya sea que busques una pieza terminada con personalización especial o prefieras la aventura de tejerla tú misma con nuestros packs DIY, estoy aquí para acompañarte en el camino.</p>
+                    <p>En <strong>Miles de Puntos</strong>, cada creación es única. No trabajo con moldes ni producciones en serie: cada puntada está pensada, cada color elegido con mimo, y cada pieza terminada con el orgullo de saber que es irrepetible.</p>
+                    <p>Ya sea que busques una pieza terminada con personalización especial o prefieras la aventura de tejerla tú misma, estoy aquí para acompañarte en el camino.</p>
                 </div>
             </div>
         </div>
@@ -69,11 +66,18 @@
 
 <section class="credits-section">
     <div class="container">
-        <div class="credits-card animate-on-scroll">
-            <p class="credits-text">
-                <i class="fas fa-code me-2"></i>
-                Web diseñada y desarrollada por <strong>Alberto Riaño González</strong> — soporte técnico y desarrollo web.
-            </p>
+        <div class="row align-items-center g-4">
+            <div class="col-md-3 text-center">
+                <img src="{{ MEDIA_URL }}about/Alberto_Riaño_Gonzalez.jpg" alt="Alberto Riaño González" class="credits-photo">
+            </div>
+            <div class="col-md-9">
+                <div class="credits-card animate-on-scroll">
+                    <p class="credits-text">
+                        <i class="fas fa-code me-2"></i>
+                        Web diseñada y desarrollada por <strong>Alberto Riaño González</strong> — soporte técnico y desarrollo web.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </section>

@@ -48,6 +48,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.orders.context_processors.cart_count',
@@ -102,11 +103,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Jazzmin Admin
 JAZZMIN_SETTINGS = {
-    "site_title": "Lazadas Admin",
-    "site_header": "Lazadas",
-    "site_brand": "Lazadas",
-    "welcome_sign": "Bienvenida al panel de Lazadas",
-    "copyright": "Lazadas - Crochet by Paula",
+    "site_title": "Miles de Puntos Admin",
+    "site_header": "Miles de Puntos",
+    "site_brand": "MdP",
+    "welcome_sign": "Bienvenida al panel de Miles de Puntos",
+    "copyright": "Miles de Puntos - Paula Miles Uribe",
     "search_model": ["products.Product", "orders.Order"],
     "topmenu_links": [
         {"name": "Ver tienda", "url": "/", "new_window": True},

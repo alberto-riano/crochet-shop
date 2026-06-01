@@ -6,15 +6,25 @@ from django.utils.text import slugify
 
 
 class Category(models.Model):
+    CATEGORY_CODES = {
+        'amigurumis': '01',
+        'complementos': '02',
+        'ropa': '03',
+    }
+
     name = models.CharField(max_length=100, verbose_name='Nombre')
     slug = models.SlugField(unique=True)
+    code = models.CharField(
+        max_length=2, unique=True, verbose_name='Código (2 dígitos)',
+        help_text='Código numérico de 2 dígitos para el ID del producto'
+    )
     description = models.TextField(blank=True, verbose_name='Descripción')
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Categoría'
         verbose_name_plural = 'Categorías'
-        ordering = ['name']
+        ordering = ['code']
 
     def __str__(self):
         return self.name
@@ -26,6 +36,10 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    product_id = models.CharField(
+        max_length=8, unique=True, verbose_name='ID Producto',
+        help_text='Formato: 2 dígitos categoría + 6 dígitos producto (ej: 01000001)'
+    )
     name = models.CharField(max_length=200, verbose_name='Nombre')
     slug = models.SlugField(unique=True)
     description = models.TextField(verbose_name='Descripción')
@@ -36,13 +50,15 @@ class Product(models.Model):
     cover_image = models.ImageField(
         upload_to='products/covers/', verbose_name='Imagen principal'
     )
-    price_custom_order = models.DecimalField(
+    price = models.DecimalField(
         max_digits=8, decimal_places=2,
-        verbose_name='Precio encargo personalizado (€)'
+        verbose_name='Precio (€)'
     )
-    price_kit = models.DecimalField(
+    discount_price = models.DecimalField(
         max_digits=8, decimal_places=2,
-        verbose_name='Precio Pack DIY (€)'
+        blank=True, null=True,
+        verbose_name='Precio rebajado (€)',
+        help_text='Dejar vacío si no está en oferta'
     )
     is_customizable = models.BooleanField(
         default=True, verbose_name='¿Personalizable?'
@@ -68,18 +84,29 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
-        ordering = ['-created_at']
+        ordering = ['product_id']
 
     def __str__(self):
-        return self.name
+        return f'[{self.product_id}] {self.name}'
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        # Generate QR code from video URL
+        if not self.product_id and self.category:
+            self.product_id = self._generate_product_id()
         if self.video_url and not self.qr_code:
             self._generate_qr()
         super().save(*args, **kwargs)
+
+    def _generate_product_id(self):
+        last = Product.objects.filter(
+            product_id__startswith=self.category.code
+        ).order_by('-product_id').first()
+        if last:
+            seq = int(last.product_id[2:]) + 1
+        else:
+            seq = 1
+        return f'{self.category.code}{seq:06d}'
 
     def _generate_qr(self):
         qr = qrcode.QRCode(version=1, box_size=10, border=4)
@@ -92,8 +119,14 @@ class Product(models.Model):
         self.qr_code.save(filename, ContentFile(buffer.getvalue()), save=False)
 
     @property
-    def min_price(self):
-        return min(self.price_custom_order, self.price_kit)
+    def display_price(self):
+        if self.discount_price:
+            return self.discount_price
+        return self.price
+
+    @property
+    def is_on_sale(self):
+        return self.discount_price is not None
 
     @property
     def colors_list(self):
@@ -118,6 +151,12 @@ class ProductImage(models.Model):
     alt_text = models.CharField(
         max_length=200, blank=True, verbose_name='Texto alternativo'
     )
+    order = models.PositiveIntegerField(default=0, verbose_name='Orden')
+
+    class Meta:
+        verbose_name = 'Imagen de producto'
+        verbose_name_plural = 'Imágenes de producto'
+        ordering = ['order']
     order = models.PositiveIntegerField(default=0, verbose_name='Orden')
 
     class Meta:

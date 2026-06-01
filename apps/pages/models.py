@@ -23,7 +23,7 @@ class SiteConfiguration(models.Model):
         max_length=200, default='Hecho a mano, punto a punto',
         verbose_name='Eslogan'
     )
-    about_text = models.TextField(blank=True, verbose_name='Texto "Sobre nosotras"')
+    about_text = models.TextField(blank=True, verbose_name='Texto "Sobre nosotros"')
     instagram_url = models.URLField(blank=True, verbose_name='Instagram')
     facebook_url = models.URLField(blank=True, verbose_name='Facebook')
     pinterest_url = models.URLField(blank=True, verbose_name='Pinterest')

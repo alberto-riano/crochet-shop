@@ -29,7 +29,7 @@ def add_to_cart(request, product_id):
         if cart_key in cart:
             cart[cart_key]['quantity'] += 1
         else:
-            price = float(product.price_custom_order if order_type == 'custom_order' else product.price_kit)
+            price = float(product.display_price)
             cart[cart_key] = {
                 'product_id': product_id,
                 'name': product.name,

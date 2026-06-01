@@ -213,7 +213,10 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--color-terracotta) 0%, var(--color-brown) 100%);
+    background-color: var(--color-brown);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
@@ -1396,4 +1399,100 @@ img {
     .section-testimonials {
         padding: 4rem 0;
     }
+}
+
+/* ========================================
+   PRICING - Sale & Discount Styles
+   ======================================== */
+.product-price-block {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.price-current {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-brown);
+}
+
+.price-current.price-sale {
+    color: var(--color-coral);
+}
+
+.price-original {
+    font-size: 1.4rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+}
+
+.badge-sale {
+    background: var(--color-coral);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.price-original-sm {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+}
+
+.price-sale-sm {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-coral);
+}
+
+.product-id-badge {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    background: var(--color-sand);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+
+/* ========================================
+   BRAND LOGO - Circular
+   ======================================== */
+.brand-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-terracotta);
+    margin-right: 0.5rem;
+}
+
+/* ========================================
+   HERO - Banner Background
+   ======================================== */
+
+/* ========================================
+   ABOUT - Photos
+   ======================================== */
+.about-photo {
+    width: 100%;
+    max-width: 400px;
+    border-radius: var(--card-radius);
+    box-shadow: 0 10px 40px rgba(92, 64, 51, 0.15);
+    object-fit: cover;
+}
+
+.credits-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-terracotta);
+    box-shadow: 0 5px 20px rgba(92, 64, 51, 0.1);
 }

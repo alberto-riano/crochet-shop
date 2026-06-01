@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section">
+<section class="hero-section" style="background-image: url('{{ MEDIA_URL }}visual/Banner_MdP.png');">
     <div class="hero-overlay"></div>
     <div class="container hero-content">
         <h1 class="hero-title animate-fade-in">Creaciones únicas<br>hechas con amor y hilo</h1>
@@ -40,7 +40,14 @@
                         </div>
                         <div class="product-card-body">
                             <h3 class="product-card-title">{{ product.name }}</h3>
-                            <p class="product-card-price">Desde {{ product.min_price }}€</p>
+                            <div class="product-card-price">
+                                {% if product.is_on_sale %}
+                                <span class="price-original-sm">{{ product.price }}€</span>
+                                <span class="price-sale-sm">{{ product.discount_price }}€</span>
+                                {% else %}
+                                {{ product.price }}€
+                                {% endif %}
+                            </div>
                         </div>
                     </a>
                 </div>

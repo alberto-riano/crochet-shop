@@ -83,7 +83,7 @@ crochet_shop/
 | `/shop/<slug>/` | Detalle de producto |
 | `/cart/` | Carrito de compra |
 | `/cart/checkout/` | Finalizar pedido |
-| `/about/` | Sobre nosotras |
+| `/about/` | Sobre nosotros |
 | `/contact/` | Contacto |
 | `/admin/` | Panel de administración |
 
