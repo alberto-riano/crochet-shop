@@ -138,6 +138,7 @@ img {
     display: flex;
     flex-direction: column;
     line-height: 1;
+    align-items: center;
 }
 
 .brand-text {
@@ -153,6 +154,7 @@ img {
     letter-spacing: 3px;
     color: var(--color-terracotta);
     font-weight: 500;
+    margin-top: 0.55rem;
 }
 
 .nav-link {
@@ -1465,12 +1467,12 @@ img {
    BRAND LOGO - Circular
    ======================================== */
 .brand-logo {
-    width: 45px;
-    height: 45px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--color-terracotta);
-    margin-right: 0.5rem;
+    margin-right: 0;
 }
 
 /* ========================================

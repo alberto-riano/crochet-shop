@@ -1,8 +1,37 @@
 import io
+import os
+import re
+import unicodedata
+
 import qrcode
 from django.db import models
+from django.db.models import Max
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
+
+
+def _normalize_token(value):
+    normalized = unicodedata.normalize('NFKD', value or '')
+    normalized = normalized.encode('ascii', 'ignore').decode('ascii')
+    normalized = re.sub(r'[^A-Za-z0-9]+', '_', normalized)
+    normalized = re.sub(r'_+', '_', normalized).strip('_')
+    return normalized or 'SinNombre'
+
+
+def _normalized_extension(filename):
+    ext = os.path.splitext(filename or '')[1].lower()
+    return ext if ext else '.jpg'
+
+
+def _category_label(category):
+    raw = category.name if category else 'Categoria'
+    normalized = _normalize_token(raw)
+    mapping = {
+        'Amigurumis': 'Amigurumi',
+        'Complementos': 'Complemento',
+        'Ropa': 'Ropa',
+    }
+    return mapping.get(normalized, normalized)
 
 
 class Category(models.Model):
@@ -78,6 +107,11 @@ class Product(models.Model):
     is_available = models.BooleanField(
         default=True, verbose_name='Disponible'
     )
+    stock = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Stock',
+        help_text='Unidades disponibles para vender'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -94,6 +128,9 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         if not self.product_id and self.category:
             self.product_id = self._generate_product_id()
+        if self.cover_image and not self.cover_image._committed:
+            ext = _normalized_extension(self.cover_image.name)
+            self.cover_image.name = self._build_cover_filename(ext)
         if self.video_url and not self.qr_code:
             self._generate_qr()
         super().save(*args, **kwargs)
@@ -117,6 +154,19 @@ class Product(models.Model):
         img.save(buffer, format='PNG')
         filename = f'qr_{self.slug}.png'
         self.qr_code.save(filename, ContentFile(buffer.getvalue()), save=False)
+
+    def _build_base_photo_name(self):
+        category_token = _category_label(self.category)
+        product_token = _normalize_token(self.name)
+        return f'{self.product_id}_{category_token}_{product_token}'
+
+    def _build_cover_filename(self, ext):
+        base_name = self._build_base_photo_name()
+        return f'products/covers/{base_name}_01{ext}'
+
+    def build_gallery_filename(self, sequence_number, ext):
+        base_name = self._build_base_photo_name()
+        return f'products/gallery/{base_name}_{sequence_number:02d}{ext}'
 
     @property
     def display_price(self):
@@ -157,12 +207,19 @@ class ProductImage(models.Model):
         verbose_name = 'Imagen de producto'
         verbose_name_plural = 'Imágenes de producto'
         ordering = ['order']
-    order = models.PositiveIntegerField(default=0, verbose_name='Orden')
-
-    class Meta:
-        verbose_name = 'Imagen de producto'
-        verbose_name_plural = 'Imágenes de producto'
-        ordering = ['order']
 
     def __str__(self):
         return f"Imagen de {self.product.name}"
+
+    def save(self, *args, **kwargs):
+        if self.order <= 0:
+            max_order = ProductImage.objects.filter(product=self.product).aggregate(
+                max_order=Max('order')
+            )['max_order'] or 0
+            self.order = max_order + 1
+
+        if self.image and not self.image._committed:
+            ext = _normalized_extension(self.image.name)
+            self.image.name = self.product.build_gallery_filename(self.order, ext)
+
+        super().save(*args, **kwargs)
