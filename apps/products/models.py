@@ -35,22 +35,21 @@ def _category_label(category):
 
 
 def _product_cover_path(instance, filename):
-    """Upload cover to: products/{product_id}/cover/{filename}"""
+    """Upload cover to: products/{product_id}/{product_id}_01.{ext}"""
     ext = _normalized_extension(filename)
-    name = _normalize_token(instance.name)
-    return f'products/{instance.product_id}/cover/{name}{ext}'
+    return f'products/{instance.product_id}/{instance.product_id}_01{ext}'
 
 
 def _product_qr_path(instance, filename):
-    """Upload QR to: products/{product_id}/qr/{filename}"""
-    return f'products/{instance.product_id}/qr/qr.png'
+    """Upload QR to: products/{product_id}/{product_id}_qr.png"""
+    return f'products/{instance.product_id}/{instance.product_id}_qr.png'
 
 
 def _product_gallery_path(instance, filename):
-    """Upload gallery image to: products/{product_id}/gallery/{seq}.{ext}"""
+    """Upload gallery image to: products/{product_id}/{product_id}_{seq}.{ext}"""
     ext = _normalized_extension(filename)
     seq = instance.order if instance.order > 0 else 1
-    return f'products/{instance.product.product_id}/gallery/{seq:02d}{ext}'
+    return f'products/{instance.product.product_id}/{instance.product.product_id}_{seq:02d}{ext}'
 
 
 def _category_image_path(instance, filename):
@@ -155,7 +154,42 @@ class Product(models.Model):
             self.product_id = self._generate_product_id()
         if self.video_url and not self.qr_code:
             self._generate_qr()
+        # Track if cover changed to sync gallery later
+        self._cover_changed = self.cover_image and (
+            not self.pk or self._cover_image_changed()
+        )
         super().save(*args, **kwargs)
+        # Sync cover as first gallery image (order=1)
+        if self._cover_changed:
+            self._sync_cover_to_gallery()
+
+    def _cover_image_changed(self):
+        try:
+            old = Product.objects.get(pk=self.pk)
+            return old.cover_image != self.cover_image
+        except Product.DoesNotExist:
+            return True
+
+    def _sync_cover_to_gallery(self):
+        """Ensure cover image exists as ProductImage with order=1."""
+        cover_entry = self.images.filter(order=1).first()
+        if cover_entry:
+            # Update existing order=1 entry to point to same file
+            if cover_entry.image.name != self.cover_image.name:
+                cover_entry.image = self.cover_image
+                cover_entry.alt_text = f'{self.name} - portada'
+                ProductImage.objects.filter(pk=cover_entry.pk).update(
+                    image=self.cover_image.name,
+                    alt_text=f'{self.name} - portada',
+                )
+        else:
+            # Create new gallery entry for the cover
+            ProductImage.objects.create(
+                product=self,
+                image=self.cover_image.name,
+                alt_text=f'{self.name} - portada',
+                order=1,
+            )
 
     def _generate_product_id(self):
         last = Product.objects.filter(

@@ -6,8 +6,18 @@ from .models import Product, ProductImage
 
 @receiver(post_delete, sender=ProductImage)
 def delete_product_image_from_s3(sender, instance, **kwargs):
-    """Delete the image file from S3 when a ProductImage is deleted."""
+    """Delete the image file from S3 when a ProductImage is deleted.
+    Skip if it's the cover image (order=1) since cover_image field owns that file.
+    """
     if instance.image:
+        # Don't delete if this is the cover reference (same file as product.cover_image)
+        if instance.order == 1 and instance.product_id:
+            try:
+                product = Product.objects.get(pk=instance.product_id)
+                if product.cover_image and product.cover_image.name == instance.image.name:
+                    return
+            except Product.DoesNotExist:
+                pass
         instance.image.delete(save=False)
 
 

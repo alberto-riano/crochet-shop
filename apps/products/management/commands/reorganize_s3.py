@@ -54,35 +54,35 @@ class Command(BaseCommand):
 
         # --- Products ---
         for product in Product.objects.select_related('category').all():
-            # Cover image
+            # Cover image → products/{product_id}/{product_id}_01.ext
             if product.cover_image:
                 old_key = f'{env_prefix}/{product.cover_image.name}'
                 ext = _normalized_extension(product.cover_image.name)
-                name = _normalize_token(product.name)
-                new_relative = f'products/{product.product_id}/cover/{name}{ext}'
+                new_relative = f'products/{product.product_id}/{product.product_id}_01{ext}'
                 new_key = f'{env_prefix}/{new_relative}'
 
                 if old_key != new_key:
                     moves.append((old_key, new_key))
                     db_updates.append(('product_cover', product.pk, new_relative))
 
-            # QR code
+            # QR code → products/{product_id}/{product_id}_qr.png
             if product.qr_code:
                 old_key = f'{env_prefix}/{product.qr_code.name}'
-                new_relative = f'products/{product.product_id}/qr/qr.png'
+                new_relative = f'products/{product.product_id}/{product.product_id}_qr.png'
                 new_key = f'{env_prefix}/{new_relative}'
 
                 if old_key != new_key:
                     moves.append((old_key, new_key))
                     db_updates.append(('product_qr', product.pk, new_relative))
 
-        # --- Gallery images ---
+        # --- Gallery images → products/{product_id}/{product_id}_{seq}.ext ---
         for img in ProductImage.objects.select_related('product').all():
             if img.image:
                 old_key = f'{env_prefix}/{img.image.name}'
                 ext = _normalized_extension(img.image.name)
                 seq = img.order if img.order > 0 else 1
-                new_relative = f'products/{img.product.product_id}/gallery/{seq:02d}{ext}'
+                pid = img.product.product_id
+                new_relative = f'products/{pid}/{pid}_{seq:02d}{ext}'
                 new_key = f'{env_prefix}/{new_relative}'
 
                 if old_key != new_key:

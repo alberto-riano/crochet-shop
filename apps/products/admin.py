@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db import models
 from django.utils.html import format_html
 
 from .models import Category, Product, ProductImage
@@ -78,7 +79,10 @@ class ProductAdmin(admin.ModelAdmin):
         if not gallery_images:
             return
 
-        last_order = form.instance.images.count()
+        # Start after the highest existing order (cover is always order=1)
+        last_order = form.instance.images.aggregate(
+            max_order=models.Max('order')
+        )['max_order'] or 1
         for idx, image in enumerate(gallery_images, start=1):
             ProductImage.objects.create(
                 product=form.instance,
