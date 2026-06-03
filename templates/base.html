@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{% url 'pages:home' %}">
-                <img src="{{ MEDIA_URL }}visual/Logo_MdP.png" alt="Miles de Puntos" class="brand-logo">
+                <img src="{% static 'images/Logo_MdP.png' %}" alt="Miles de Puntos" class="brand-logo">
                 <span class="brand-subtitle">Miles de Puntos</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
