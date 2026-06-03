@@ -1498,3 +1498,47 @@ img {
     border: 3px solid var(--color-terracotta);
     box-shadow: 0 5px 20px rgba(92, 64, 51, 0.1);
 }
+
+/* ========================================
+   PURCHASE OPTIONS (DIY / Finished)
+   ======================================== */
+.purchase-option {
+    border: 1px solid #eee;
+    border-radius: var(--card-radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+}
+
+.purchase-option:hover {
+    border-color: var(--color-terracotta);
+}
+
+.purchase-option-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--color-chocolate);
+}
+
+.purchase-option-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.75rem;
+}
+
+.purchase-option-diy {
+    background: linear-gradient(135deg, #faf7f5 0%, #fff 100%);
+    border-color: var(--color-terracotta);
+}
+
+.diy-features {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 1rem;
+    font-size: 0.9rem;
+}
+
+.diy-features li {
+    padding: 0.25rem 0;
+}
