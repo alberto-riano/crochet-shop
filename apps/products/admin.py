@@ -46,25 +46,21 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     list_display = [
         'product_id', 'name', 'category', 'price', 'diy_price',
-        'stock', 'is_available', 'is_diy_available', 'is_customizable'
+        'stock', 'is_available', 'is_customizable'
     ]
-    list_filter = ['category', 'is_available', 'is_diy_available', 'is_customizable']
+    list_filter = ['category', 'is_available', 'is_customizable']
     search_fields = ['name', 'description', 'product_id']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
-    list_editable = ['price', 'diy_price', 'stock', 'is_available', 'is_diy_available']
+    list_editable = ['price', 'diy_price', 'stock', 'is_available', 'is_customizable']
     readonly_fields = ['product_id', 'cover_s3_path']
     fieldsets = (
         (None, {
             'fields': ('product_id', 'name', 'slug', 'category', 'description', 'cover_image', 'cover_s3_path')
         }),
         ('Precios y disponibilidad', {
-            'fields': ('price', 'discount_price', 'stock', 'is_available'),
-            'description': 'Precio de la pieza terminada. El rebajado aparecerá como oferta (precio original tachado).'
-        }),
-        ('Pack DIY', {
-            'fields': ('is_diy_available', 'diy_price'),
-            'description': 'Activa si este producto se puede comprar como kit: materiales + patrón PDF + vídeo tutorial.'
+            'fields': ('price', 'discount_price', 'diy_price', 'stock', 'is_available'),
+            'description': 'Si pones Precio DIY, el producto se ofrecerá también como Pack DIY en la web.'
         }),
         ('Personalización', {
             'fields': ('is_customizable', 'customization_options')

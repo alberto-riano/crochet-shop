@@ -24,7 +24,7 @@ def add_to_cart(request, product_id):
         custom_notes = request.POST.get('custom_notes', '')
 
         # Validate availability based on order type
-        if order_type == 'kit' and not product.is_diy_available:
+        if order_type == 'kit' and not product.diy_price:
             messages.error(request, 'Este producto no está disponible como Pack DIY.')
             return redirect('orders:cart')
         if order_type == 'custom_order' and not product.is_available:
