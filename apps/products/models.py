@@ -105,13 +105,23 @@ class Product(models.Model):
     )
     price = models.DecimalField(
         max_digits=8, decimal_places=2,
-        verbose_name='Precio (€)'
+        verbose_name='Precio pieza terminada (€)'
     )
     discount_price = models.DecimalField(
         max_digits=8, decimal_places=2,
         blank=True, null=True,
         verbose_name='Precio rebajado (€)',
         help_text='Dejar vacío si no está en oferta'
+    )
+    is_diy_available = models.BooleanField(
+        default=False, verbose_name='¿Disponible como Pack DIY?',
+        help_text='Si se activa, el cliente podrá comprar el kit de materiales + patrón + vídeo'
+    )
+    diy_price = models.DecimalField(
+        max_digits=8, decimal_places=2,
+        blank=True, null=True,
+        verbose_name='Precio Pack DIY (€)',
+        help_text='Precio del kit: materiales + patrón PDF + acceso vídeo tutorial'
     )
     is_customizable = models.BooleanField(
         default=True, verbose_name='¿Personalizable?'

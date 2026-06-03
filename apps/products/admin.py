@@ -45,25 +45,26 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     list_display = [
-        'product_id', 'name', 'category', 'price', 'discount_price',
-        'stock', 'is_on_sale', 'is_available', 'is_customizable'
+        'product_id', 'name', 'category', 'price', 'diy_price',
+        'stock', 'is_available', 'is_diy_available', 'is_customizable'
     ]
-    list_filter = ['category', 'is_available', 'is_customizable']
+    list_filter = ['category', 'is_available', 'is_diy_available', 'is_customizable']
     search_fields = ['name', 'description', 'product_id']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
-    list_editable = ['price', 'discount_price', 'stock', 'is_available']
+    list_editable = ['price', 'diy_price', 'stock', 'is_available', 'is_diy_available']
     readonly_fields = ['product_id', 'cover_s3_path']
     fieldsets = (
         (None, {
             'fields': ('product_id', 'name', 'slug', 'category', 'description', 'cover_image', 'cover_s3_path')
         }),
-        ('Precios', {
-            'fields': ('price', 'discount_price'),
-            'description': 'El precio rebajado aparecerá como oferta en la web (precio original tachado).'
+        ('Precios y disponibilidad', {
+            'fields': ('price', 'discount_price', 'stock', 'is_available'),
+            'description': 'Precio de la pieza terminada. El rebajado aparecerá como oferta (precio original tachado).'
         }),
-        ('Stock y disponibilidad', {
-            'fields': ('stock', 'is_available')
+        ('Pack DIY', {
+            'fields': ('is_diy_available', 'diy_price'),
+            'description': 'Activa si este producto se puede comprar como kit: materiales + patrón PDF + vídeo tutorial.'
         }),
         ('Personalización', {
             'fields': ('is_customizable', 'customization_options')

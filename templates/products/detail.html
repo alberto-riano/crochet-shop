@@ -52,19 +52,22 @@
                         {{ product.description|linebreaks }}
                     </div>
 
-                    <!-- Price display -->
-                    <div class="product-price-block">
-                        {% if product.is_on_sale %}
-                        <span class="price-original">{{ product.price }}€</span>
-                        <span class="price-current price-sale">{{ product.discount_price }}€</span>
-                        <span class="badge-sale">Oferta</span>
-                        {% else %}
-                        <span class="price-current">{{ product.price }}€</span>
-                        {% endif %}
-                    </div>
-
-                    <!-- Add to cart -->
-                    <div class="purchase-option">
+                    <!-- Option 1: Finished product -->
+                    {% if product.is_available %}
+                    <div class="purchase-option purchase-option-finished">
+                        <h3 class="purchase-option-title">
+                            <i class="fas fa-gift me-2"></i>Pieza terminada
+                        </h3>
+                        <p class="purchase-option-desc">Recíbela lista, hecha a mano con todo el cariño.</p>
+                        <div class="product-price-block">
+                            {% if product.is_on_sale %}
+                            <span class="price-original">{{ product.price }}€</span>
+                            <span class="price-current price-sale">{{ product.discount_price }}€</span>
+                            <span class="badge-sale">Oferta</span>
+                            {% else %}
+                            <span class="price-current">{{ product.price }}€</span>
+                            {% endif %}
+                        </div>
                         <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
                             {% csrf_token %}
                             <input type="hidden" name="order_type" value="custom_order">
@@ -89,6 +92,34 @@
                             </button>
                         </form>
                     </div>
+                    {% endif %}
+
+                    <!-- Option 2: DIY Kit -->
+                    {% if product.is_diy_available and product.diy_price %}
+                    <div class="purchase-option purchase-option-diy">
+                        <h3 class="purchase-option-title">
+                            <i class="fas fa-box-open me-2"></i>Pack DIY
+                        </h3>
+                        <p class="purchase-option-desc">
+                            Todos los materiales + patrón PDF + vídeo tutorial paso a paso.
+                        </p>
+                        <div class="product-price-block">
+                            <span class="price-current">{{ product.diy_price }}€</span>
+                        </div>
+                        <ul class="diy-features">
+                            <li><i class="fas fa-check text-success me-2"></i>Todos los materiales incluidos</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Patrón impreso + PDF digital</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Vídeo tutorial privado con QR</li>
+                        </ul>
+                        <form method="post" action="{% url 'orders:add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_type" value="kit">
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-yarn me-2"></i>Comprar Pack DIY
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

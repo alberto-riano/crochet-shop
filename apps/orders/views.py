@@ -18,10 +18,18 @@ def _save_cart(request, cart):
 
 def add_to_cart(request, product_id):
     if request.method == 'POST':
-        product = get_object_or_404(Product, id=product_id, is_available=True)
+        product = get_object_or_404(Product, id=product_id)
         order_type = request.POST.get('order_type', 'custom_order')
         color = request.POST.get('color', '')
         custom_notes = request.POST.get('custom_notes', '')
+
+        # Validate availability based on order type
+        if order_type == 'kit' and not product.is_diy_available:
+            messages.error(request, 'Este producto no está disponible como Pack DIY.')
+            return redirect('orders:cart')
+        if order_type == 'custom_order' and not product.is_available:
+            messages.error(request, 'Este producto no está disponible.')
+            return redirect('orders:cart')
 
         cart = _get_cart(request)
         cart_key = f"{product_id}_{order_type}_{color}"
@@ -29,7 +37,12 @@ def add_to_cart(request, product_id):
         if cart_key in cart:
             cart[cart_key]['quantity'] += 1
         else:
-            price = float(product.display_price)
+            # Use DIY price for kits, display_price for finished products
+            if order_type == 'kit':
+                price = float(product.diy_price)
+            else:
+                price = float(product.display_price)
+
             cart[cart_key] = {
                 'product_id': product_id,
                 'name': product.name,
