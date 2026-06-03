@@ -1,7 +1,7 @@
 import os
 import re
-import shutil
 from collections import defaultdict
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.utils.text import slugify
@@ -43,10 +43,6 @@ class Command(BaseCommand):
 
         # Scan photos folder
         photos_dir = settings.BASE_DIR / 'photos'
-        media_covers = settings.MEDIA_ROOT / 'products' / 'covers'
-        media_gallery = settings.MEDIA_ROOT / 'products' / 'gallery'
-        media_covers.mkdir(parents=True, exist_ok=True)
-        media_gallery.mkdir(parents=True, exist_ok=True)
 
         # Group photos by product_id
         products_photos = defaultdict(list)
@@ -55,11 +51,8 @@ class Command(BaseCommand):
             if match:
                 cat_code = match.group(1)
                 prod_num = match.group(2)
-                product_id = f'{cat_code}{prod_num:>04}'
-                # Full 8-digit ID
                 full_id = f'{cat_code}{int(prod_num):06d}'
                 name_parts = match.group(4).replace('_', ' ')
-                category_name = match.group(3)
                 seq = int(match.group(5))
                 products_photos[full_id].append({
                     'filename': filename,
@@ -68,7 +61,7 @@ class Command(BaseCommand):
                     'seq': seq,
                 })
 
-        # Create products
+        # Create products (files upload to S3 via django-storages)
         for product_id, photos in sorted(products_photos.items()):
             photos.sort(key=lambda x: x['seq'])
             first = photos[0]
@@ -76,34 +69,32 @@ class Command(BaseCommand):
             product_name = first['name']
 
             # Cover = first photo (_01)
-            cover_file = first['filename']
-            cover_src = photos_dir / cover_file
-            cover_dest = media_covers / cover_file
-            shutil.copy2(str(cover_src), str(cover_dest))
-
-            product = Product.objects.create(
-                product_id=product_id,
-                name=product_name,
-                slug=slugify(product_name) or slugify(f'{product_name}-{product_id}'),
-                description=f'{product_name} hecho a mano por Paula. Pieza única tejida con materiales de calidad.',
-                category=cat_objects[cat_code],
-                cover_image=f'products/covers/{cover_file}',
-                price=0,  # To be set from admin
-                is_customizable=True,
-                is_available=True,
-            )
+            cover_path = photos_dir / first['filename']
+            with open(cover_path, 'rb') as f:
+                cover_file = File(f, name=first['filename'])
+                product = Product.objects.create(
+                    product_id=product_id,
+                    name=product_name,
+                    slug=slugify(product_name) or slugify(f'{product_name}-{product_id}'),
+                    description=f'{product_name} hecho a mano por Paula. Pieza única tejida con materiales de calidad.',
+                    category=cat_objects[cat_code],
+                    cover_image=cover_file,
+                    price=0,
+                    is_customizable=True,
+                    is_available=True,
+                )
 
             # Additional photos as gallery
             for photo in photos[1:]:
-                gallery_src = photos_dir / photo['filename']
-                gallery_dest = media_gallery / photo['filename']
-                shutil.copy2(str(gallery_src), str(gallery_dest))
-                ProductImage.objects.create(
-                    product=product,
-                    image=f"products/gallery/{photo['filename']}",
-                    alt_text=f"{product_name} - foto {photo['seq']}",
-                    order=photo['seq'],
-                )
+                gallery_path = photos_dir / photo['filename']
+                with open(gallery_path, 'rb') as f:
+                    gallery_file = File(f, name=photo['filename'])
+                    ProductImage.objects.create(
+                        product=product,
+                        image=gallery_file,
+                        alt_text=f"{product_name} - foto {photo['seq']}",
+                        order=photo['seq'],
+                    )
 
             photo_count = len(photos)
             self.stdout.write(f"  ✓ [{product_id}] {product_name} ({photo_count} foto{'s' if photo_count > 1 else ''})")

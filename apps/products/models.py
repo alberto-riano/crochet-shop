@@ -34,6 +34,31 @@ def _category_label(category):
     return mapping.get(normalized, normalized)
 
 
+def _product_cover_path(instance, filename):
+    """Upload cover to: products/{product_id}/cover/{filename}"""
+    ext = _normalized_extension(filename)
+    name = _normalize_token(instance.name)
+    return f'products/{instance.product_id}/cover/{name}{ext}'
+
+
+def _product_qr_path(instance, filename):
+    """Upload QR to: products/{product_id}/qr/{filename}"""
+    return f'products/{instance.product_id}/qr/qr.png'
+
+
+def _product_gallery_path(instance, filename):
+    """Upload gallery image to: products/{product_id}/gallery/{seq}.{ext}"""
+    ext = _normalized_extension(filename)
+    seq = instance.order if instance.order > 0 else 1
+    return f'products/{instance.product.product_id}/gallery/{seq:02d}{ext}'
+
+
+def _category_image_path(instance, filename):
+    """Upload category image to: categories/{slug}.{ext}"""
+    ext = _normalized_extension(filename)
+    return f'categories/{instance.slug}{ext}'
+
+
 class Category(models.Model):
     CATEGORY_CODES = {
         'amigurumis': '01',
@@ -48,7 +73,7 @@ class Category(models.Model):
         help_text='Código numérico de 2 dígitos para el ID del producto'
     )
     description = models.TextField(blank=True, verbose_name='Descripción')
-    image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    image = models.ImageField(upload_to=_category_image_path, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Categoría'
@@ -77,7 +102,7 @@ class Product(models.Model):
         related_name='products', verbose_name='Categoría'
     )
     cover_image = models.ImageField(
-        upload_to='products/covers/', verbose_name='Imagen principal'
+        upload_to=_product_cover_path, verbose_name='Imagen principal'
     )
     price = models.DecimalField(
         max_digits=8, decimal_places=2,
@@ -101,7 +126,7 @@ class Product(models.Model):
         blank=True, verbose_name='URL del vídeo tutorial'
     )
     qr_code = models.ImageField(
-        upload_to='products/qr/', blank=True,
+        upload_to=_product_qr_path, blank=True,
         verbose_name='Código QR'
     )
     is_available = models.BooleanField(
@@ -128,9 +153,6 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         if not self.product_id and self.category:
             self.product_id = self._generate_product_id()
-        if self.cover_image and not self.cover_image._committed:
-            ext = _normalized_extension(self.cover_image.name)
-            self.cover_image.name = self._build_cover_filename(ext)
         if self.video_url and not self.qr_code:
             self._generate_qr()
         super().save(*args, **kwargs)
@@ -154,19 +176,6 @@ class Product(models.Model):
         img.save(buffer, format='PNG')
         filename = f'qr_{self.slug}.png'
         self.qr_code.save(filename, ContentFile(buffer.getvalue()), save=False)
-
-    def _build_base_photo_name(self):
-        category_token = _category_label(self.category)
-        product_token = _normalize_token(self.name)
-        return f'{self.product_id}_{category_token}_{product_token}'
-
-    def _build_cover_filename(self, ext):
-        base_name = self._build_base_photo_name()
-        return f'products/covers/{base_name}_01{ext}'
-
-    def build_gallery_filename(self, sequence_number, ext):
-        base_name = self._build_base_photo_name()
-        return f'products/gallery/{base_name}_{sequence_number:02d}{ext}'
 
     @property
     def display_price(self):
@@ -196,7 +205,7 @@ class ProductImage(models.Model):
         related_name='images', verbose_name='Producto'
     )
     image = models.ImageField(
-        upload_to='products/gallery/', verbose_name='Imagen'
+        upload_to=_product_gallery_path, verbose_name='Imagen'
     )
     alt_text = models.CharField(
         max_length=200, blank=True, verbose_name='Texto alternativo'
@@ -217,9 +226,5 @@ class ProductImage(models.Model):
                 max_order=Max('order')
             )['max_order'] or 0
             self.order = max_order + 1
-
-        if self.image and not self.image._committed:
-            ext = _normalized_extension(self.image.name)
-            self.image.name = self.product.build_gallery_filename(self.order, ext)
 
         super().save(*args, **kwargs)

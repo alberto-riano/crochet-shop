@@ -8,8 +8,9 @@ from .forms import ProductAdminForm
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
-    readonly_fields = ['image_preview', 's3_key']
-    fields = ['image_preview', 's3_key', 'image', 'alt_text', 'order']
+    can_delete = True  # Allows deleting images (signal handles S3 cleanup)
+    readonly_fields = ['image_preview', 's3_path']
+    fields = ['image_preview', 's3_path', 'image', 'alt_text', 'order']
 
     def image_preview(self, obj):
         if obj.pk and obj.image:
@@ -22,12 +23,15 @@ class ProductImageInline(admin.TabularInline):
 
     image_preview.short_description = 'Vista'
 
-    def s3_key(self, obj):
+    def s3_path(self, obj):
         if obj.pk and obj.image:
-            return obj.image.name
+            return format_html(
+                '<code style="font-size:11px;color:#666;">{}</code>',
+                obj.image.name
+            )
         return '-'
 
-    s3_key.short_description = 'Archivo en S3'
+    s3_path.short_description = 'Ruta en S3'
 
 
 @admin.register(Category)
@@ -48,10 +52,10 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
     list_editable = ['price', 'discount_price', 'stock', 'is_available']
-    readonly_fields = ['product_id', 'cover_image_s3_key']
+    readonly_fields = ['product_id', 'cover_s3_path']
     fieldsets = (
         (None, {
-            'fields': ('product_id', 'name', 'slug', 'category', 'description', 'cover_image', 'cover_image_s3_key')
+            'fields': ('product_id', 'name', 'slug', 'category', 'description', 'cover_image', 'cover_s3_path')
         }),
         ('Precios', {
             'fields': ('price', 'discount_price'),
@@ -83,9 +87,12 @@ class ProductAdmin(admin.ModelAdmin):
                 order=last_order + idx,
             )
 
-    def cover_image_s3_key(self, obj):
+    def cover_s3_path(self, obj):
         if obj and obj.cover_image:
-            return obj.cover_image.name
+            return format_html(
+                '<code style="font-size:11px;color:#666;">{}</code>',
+                obj.cover_image.name
+            )
         return '-'
 
-    cover_image_s3_key.short_description = 'Portada en S3'
+    cover_s3_path.short_description = 'Portada en S3'

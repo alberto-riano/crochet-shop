@@ -59,12 +59,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crochet_shop.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database: Postgres in production, SQLite for local dev
+if config('DATABASE_URL', default=''):
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(default=config('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -98,9 +105,13 @@ AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_FILE_OVERWRITE = False
-AWS_LOCATION = 'media'
 
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+# Environment prefix: 'dev' for local, 'prod' for production
+# This ensures dev and prod files never collide in the same bucket
+S3_ENV = config('S3_ENV', default='dev')
+AWS_LOCATION = S3_ENV
+
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{S3_ENV}/'
 MEDIA_ROOT = ''
 
 # Crispy Forms
