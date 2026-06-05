@@ -14,34 +14,116 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-7">
-                <div class="checkout-form-wrapper animate-on-scroll">
-                    <h2><i class="fas fa-user me-2"></i>Datos de envío</h2>
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form|crispy }}
+                <form method="post" novalidate id="checkout-form">
+                    {% csrf_token %}
 
-                        <!-- Simulated payment fields -->
-                        <div id="card-fields" class="payment-simulation mt-4" style="display:none;">
-                            <h4 class="mb-3"><i class="fas fa-credit-card me-2"></i>Datos de tarjeta</h4>
-                            <p class="text-muted small mb-3"><i class="fas fa-lock me-1"></i>Simulación — no se procesan datos reales</p>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19" disabled>
+                    <!-- Step 1: Customer data -->
+                    <div class="checkout-form-wrapper animate-on-scroll">
+                        <h2><i class="fas fa-user me-2"></i>Datos de envío</h2>
+                        {{ form.customer_name|as_crispy_field }}
+                        {{ form.customer_email|as_crispy_field }}
+                        {{ form.customer_phone|as_crispy_field }}
+                        {{ form.customer_address|as_crispy_field }}
+                        {{ form.notes|as_crispy_field }}
+                    </div>
+
+                    <!-- Step 2: Payment method -->
+                    <div class="checkout-form-wrapper animate-on-scroll mt-4">
+                        <h2><i class="fas fa-wallet me-2"></i>Método de pago</h2>
+                        {{ form.payment_method }}
+
+                        <div class="payment-methods">
+                            <!-- Bizum -->
+                            <div class="payment-card" data-method="bizum">
+                                <div class="payment-card-header">
+                                    <div class="payment-radio">
+                                        <span class="radio-dot"></span>
+                                    </div>
+                                    <div class="payment-card-icon bizum-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="payment-card-title">
+                                        <strong>Bizum</strong>
+                                        <span class="payment-badge available">Disponible</span>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" placeholder="MM/AA" maxlength="5" disabled>
+                                <div class="payment-card-body">
+                                    <p>Envía el importe por Bizum al número:</p>
+                                    <div class="payment-data-box">
+                                        <span class="payment-data-value">{{ payment.bizum_telefono }}</span>
+                                        <button type="button" class="btn-copy" data-copy="{{ payment.bizum_telefono }}" title="Copiar">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <p class="payment-note">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Usa la <strong>referencia del pedido</strong> como concepto del Bizum para que podamos identificar tu pago.
+                                    </p>
                                 </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" placeholder="CVV" maxlength="3" disabled>
+                            </div>
+
+                            <!-- Transferencia -->
+                            <div class="payment-card" data-method="transfer">
+                                <div class="payment-card-header">
+                                    <div class="payment-radio">
+                                        <span class="radio-dot"></span>
+                                    </div>
+                                    <div class="payment-card-icon transfer-icon">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <div class="payment-card-title">
+                                        <strong>Transferencia bancaria</strong>
+                                        <span class="payment-badge available">Disponible</span>
+                                    </div>
+                                </div>
+                                <div class="payment-card-body">
+                                    <p>Realiza una transferencia a la siguiente cuenta:</p>
+                                    <div class="payment-data-box">
+                                        <div class="payment-data-label">IBAN</div>
+                                        <span class="payment-data-value">{{ payment.banco_iban }}</span>
+                                        <button type="button" class="btn-copy" data-copy="{{ payment.banco_iban }}" title="Copiar">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="payment-data-inline">
+                                        <span><strong>Beneficiario:</strong> {{ payment.banco_beneficiario }}</span>
+                                        <span><strong>Entidad:</strong> {{ payment.banco_entidad }}</span>
+                                    </div>
+                                    <p class="payment-note">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Indica la <strong>referencia del pedido</strong> como concepto de la transferencia.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta (próximamente) -->
+                            <div class="payment-card disabled" data-method="card">
+                                <div class="payment-card-header">
+                                    <div class="payment-radio">
+                                        <span class="radio-dot"></span>
+                                    </div>
+                                    <div class="payment-card-icon card-icon">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="payment-card-title">
+                                        <strong>Tarjeta de crédito/débito</strong>
+                                        <span class="payment-badge coming-soon">Próximamente</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
-                            <i class="fas fa-check me-2"></i>Confirmar pedido
-                        </button>
-                    </form>
-                </div>
+                        {% if form.payment_method.errors %}
+                        <div class="text-danger mt-2 small">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ form.payment_method.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-4" id="btn-confirm">
+                        <i class="fas fa-check me-2"></i>Confirmar pedido
+                    </button>
+                </form>
             </div>
             <div class="col-lg-5">
                 <div class="checkout-summary animate-on-scroll">
@@ -71,12 +153,41 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const radios = document.querySelectorAll('input[name="payment_method"]');
-    const cardFields = document.getElementById('card-fields');
-    radios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            cardFields.style.display = this.value === 'card' ? 'block' : 'none';
+    const cards = document.querySelectorAll('.payment-card:not(.disabled)');
+    const hiddenInput = document.querySelector('input[name="payment_method"]');
+
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Deselect all
+            cards.forEach(c => c.classList.remove('selected'));
+            // Select this one
+            this.classList.add('selected');
+            // Update hidden input
+            hiddenInput.value = this.dataset.method;
         });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const text = this.dataset.copy.replace(/\s/g, '');
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = this.querySelector('i');
+                icon.className = 'fas fa-check';
+                setTimeout(() => { icon.className = 'fas fa-copy'; }, 1500);
+            });
+        });
+    });
+
+    // Form validation: ensure payment method is selected
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        if (!hiddenInput.value) {
+            e.preventDefault();
+            document.querySelector('.payment-methods').scrollIntoView({behavior: 'smooth', block: 'center'});
+            document.querySelector('.payment-methods').classList.add('shake');
+            setTimeout(() => document.querySelector('.payment-methods').classList.remove('shake'), 600);
+        }
     });
 });
 </script>

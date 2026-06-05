@@ -18,6 +18,75 @@
                     <strong>#{{ order.reference }}</strong>
                 </div>
 
+                <!-- Payment instructions -->
+                <div class="payment-instructions">
+                    {% if order.payment_method == 'bizum' %}
+                    <div class="payment-instruction-card bizum">
+                        <div class="payment-instruction-header">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>Pago por Bizum</h4>
+                        </div>
+                        <div class="payment-instruction-body">
+                            <p>Para completar tu pedido, envía <strong>{{ order.total_price }}€</strong> por Bizum a:</p>
+                            <div class="payment-data-box">
+                                <span class="payment-data-value">{{ payment.bizum_telefono }}</span>
+                                <button type="button" class="btn-copy" data-copy="{{ payment.bizum_telefono }}" title="Copiar">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="payment-concept">
+                                <p><i class="fas fa-tag me-1"></i><strong>Concepto:</strong></p>
+                                <div class="payment-data-box concept">
+                                    <span class="payment-data-value">{{ order.reference }}</span>
+                                    <button type="button" class="btn-copy" data-copy="{{ order.reference }}" title="Copiar">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="payment-note mt-3">
+                                <i class="fas fa-clock me-1"></i>
+                                Una vez recibido el pago, confirmaremos tu pedido por email.
+                            </p>
+                        </div>
+                    </div>
+
+                    {% elif order.payment_method == 'transfer' %}
+                    <div class="payment-instruction-card transfer">
+                        <div class="payment-instruction-header">
+                            <i class="fas fa-university"></i>
+                            <h4>Pago por transferencia</h4>
+                        </div>
+                        <div class="payment-instruction-body">
+                            <p>Para completar tu pedido, realiza una transferencia de <strong>{{ order.total_price }}€</strong> a:</p>
+                            <div class="payment-data-box">
+                                <div class="payment-data-label">IBAN</div>
+                                <span class="payment-data-value">{{ payment.banco_iban }}</span>
+                                <button type="button" class="btn-copy" data-copy="{{ payment.banco_iban }}" title="Copiar">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="payment-data-inline">
+                                <span><strong>Beneficiario:</strong> {{ payment.banco_beneficiario }}</span>
+                                <span><strong>Entidad:</strong> {{ payment.banco_entidad }}</span>
+                            </div>
+                            <div class="payment-concept">
+                                <p><i class="fas fa-tag me-1"></i><strong>Concepto de la transferencia:</strong></p>
+                                <div class="payment-data-box concept">
+                                    <span class="payment-data-value">{{ order.reference }}</span>
+                                    <button type="button" class="btn-copy" data-copy="{{ order.reference }}" title="Copiar">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="payment-note mt-3">
+                                <i class="fas fa-clock me-1"></i>
+                                Las transferencias pueden tardar 24-48h en reflejarse. Confirmaremos tu pedido por email una vez recibido el pago.
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
                 <div class="confirmation-info">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -52,4 +121,21 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const text = this.dataset.copy.replace(/\s/g, '');
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = this.querySelector('i');
+                icon.className = 'fas fa-check';
+                setTimeout(() => { icon.className = 'fas fa-copy'; }, 1500);
+            });
+        });
+    });
+});
+</script>
 {% endblock %}

@@ -3,9 +3,8 @@ from django import forms
 
 class CheckoutForm(forms.Form):
     PAYMENT_CHOICES = [
-        ('card', 'Tarjeta de crédito/débito'),
-        ('transfer', 'Transferencia bancaria'),
         ('bizum', 'Bizum'),
+        ('transfer', 'Transferencia bancaria'),
     ]
 
     customer_name = forms.CharField(
@@ -30,5 +29,5 @@ class CheckoutForm(forms.Form):
     )
     payment_method = forms.ChoiceField(
         choices=PAYMENT_CHOICES, label='Método de pago',
-        widget=forms.RadioSelect
+        widget=forms.HiddenInput,  # Managed by custom UI in template
     )

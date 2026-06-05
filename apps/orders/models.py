@@ -12,6 +12,12 @@ class Order(models.Model):
         ('delivered', 'Entregado'),
     ]
 
+    PAYMENT_METHOD_CHOICES = [
+        ('bizum', 'Bizum'),
+        ('transfer', 'Transferencia bancaria'),
+        ('card', 'Tarjeta de crédito'),
+    ]
+
     reference = models.CharField(
         max_length=12, unique=True, verbose_name='Referencia'
     )
@@ -25,7 +31,8 @@ class Order(models.Model):
         verbose_name='Estado'
     )
     payment_method = models.CharField(
-        max_length=20, blank=True, verbose_name='Método de pago'
+        max_length=20, choices=PAYMENT_METHOD_CHOICES, blank=True,
+        verbose_name='Método de pago'
     )
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0,

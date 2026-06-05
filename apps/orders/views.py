@@ -3,6 +3,7 @@ from django.contrib import messages
 from apps.products.models import Product
 from .models import Order, OrderItem
 from .forms import CheckoutForm
+from crochet_shop.shop_config import get_payment_config
 
 
 def _get_cart(request):
@@ -140,15 +141,21 @@ def checkout(request):
     else:
         form = CheckoutForm()
 
+    payment_config = get_payment_config()
     context = {
         'form': form,
         'cart_items': cart_items,
         'total': total,
+        'payment': payment_config,
     }
     return render(request, 'orders/checkout.html', context)
 
 
 def order_confirmation(request, reference):
     order = get_object_or_404(Order, reference=reference)
-    context = {'order': order}
+    payment_config = get_payment_config()
+    context = {
+        'order': order,
+        'payment': payment_config,
+    }
     return render(request, 'orders/confirmation.html', context)
