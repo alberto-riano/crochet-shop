@@ -52,6 +52,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.orders.context_processors.cart_count',
+                'crochet_shop.context_processors.google_analytics',
             ],
         },
     },
@@ -153,3 +154,6 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
     "dark_mode_theme": None,
 }
+
+# Google Analytics
+GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID', default='')
