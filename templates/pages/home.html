@@ -28,7 +28,7 @@
                     <a href="{% url 'products:detail' product.slug %}">
                         <div class="product-card-image">
                             {% if product.cover_image %}
-                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}">
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" loading="lazy" width="400" height="400">
                             {% else %}
                             <div class="product-placeholder">
                                 <i class="fas fa-yarn"></i>

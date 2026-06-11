@@ -29,9 +29,9 @@
                     <a href="{% url 'products:detail' product.slug %}">
                         <div class="product-card-image">
                             {% if product.cover_image %}
-                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" class="product-img-main">
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" class="product-img-main" loading="lazy" width="400" height="400">
                             {% if product.images.first %}
-                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-img-hover">
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-img-hover" loading="lazy" width="400" height="400">
                             {% endif %}
                             {% else %}
                             <div class="product-placeholder">

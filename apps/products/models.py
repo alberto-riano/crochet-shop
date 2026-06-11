@@ -4,10 +4,51 @@ import re
 import unicodedata
 
 import qrcode
+from PIL import Image as PILImage
 from django.db import models
 from django.db.models import Max
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.text import slugify
+
+
+# --------------- Image optimization ---------------
+MAX_IMAGE_WIDTH = 1200  # px — sufficient for detail view
+THUMBNAIL_WIDTH = 600   # px — for product cards
+JPEG_QUALITY = 75
+
+
+def _compress_image(image_field, max_width=MAX_IMAGE_WIDTH, quality=JPEG_QUALITY):
+    """Compress and resize an ImageField in-place before saving to storage."""
+    if not image_field:
+        return
+    try:
+        img = PILImage.open(image_field)
+    except Exception:
+        return
+
+    # Convert RGBA/P to RGB for JPEG
+    if img.mode in ('RGBA', 'P'):
+        img = img.convert('RGB')
+
+    # Resize if wider than max_width, keeping aspect ratio
+    if img.width > max_width:
+        ratio = max_width / img.width
+        new_height = int(img.height * ratio)
+        img = img.resize((max_width, new_height), PILImage.LANCZOS)
+
+    # Save as optimized JPEG
+    buffer = io.BytesIO()
+    img.save(buffer, format='JPEG', quality=quality, optimize=True)
+    buffer.seek(0)
+
+    # Replace field file content
+    name = os.path.splitext(image_field.name)[0] + '.jpg'
+    image_field.save(
+        name,
+        ContentFile(buffer.read()),
+        save=False,
+    )
 
 
 def _normalize_token(value):
@@ -160,6 +201,9 @@ class Product(models.Model):
             self.product_id = self._generate_product_id()
         if self.video_url and not self.qr_code:
             self._generate_qr()
+        # Compress cover image if it's a new upload
+        if self.cover_image and hasattr(self.cover_image.file, 'read'):
+            _compress_image(self.cover_image, max_width=MAX_IMAGE_WIDTH)
         # Track if cover changed to sync gallery later
         self._cover_changed = self.cover_image and (
             not self.pk or self._cover_image_changed()
@@ -266,5 +310,9 @@ class ProductImage(models.Model):
                 max_order=Max('order')
             )['max_order'] or 0
             self.order = max_order + 1
+
+        # Compress gallery image if it's a new upload
+        if self.image and hasattr(self.image.file, 'read'):
+            _compress_image(self.image, max_width=MAX_IMAGE_WIDTH)
 
         super().save(*args, **kwargs)

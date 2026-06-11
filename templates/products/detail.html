@@ -30,11 +30,11 @@
                     {% if product.images.all %}
                     <div class="gallery-thumbs">
                         <div class="thumb active" onclick="changeImage('{{ product.cover_image.url }}', this)">
-                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}">
+                            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" loading="lazy">
                         </div>
                         {% for img in product.images.all %}
                         <div class="thumb" onclick="changeImage('{{ img.image.url }}', this)">
-                            <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}">
+                            <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}" loading="lazy">
                         </div>
                         {% endfor %}
                     </div>
@@ -135,7 +135,7 @@
                         <a href="{% url 'products:detail' rp.slug %}">
                             <div class="product-card-image">
                                 {% if rp.cover_image %}
-                                <img src="{{ rp.cover_image.url }}" alt="{{ rp.name }}">
+                                <img src="{{ rp.cover_image.url }}" alt="{{ rp.name }}" loading="lazy" width="400" height="400">
                                 {% else %}
                                 <div class="product-placeholder"><i class="fas fa-yarn"></i></div>
                                 {% endif %}
