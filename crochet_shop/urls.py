@@ -15,6 +15,9 @@ urlpatterns = [
         'document_root': Path(settings.BASE_DIR) / 'fsc',
         'path': 'index.html',
     }),
+    path('fsc/<path:path>', serve, {
+        'document_root': Path(settings.BASE_DIR) / 'fsc',
+    }),
     path('', include('apps.pages.urls')),
 ]
 

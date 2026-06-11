@@ -3,117 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FSC Fitness & Nutrición | Fernando - Entrenamiento Personal</title>
-    <meta name="description" content="Entrenamiento personal, nutrición deportiva y fisioterapia. Transforma tu cuerpo con un plan 100% personalizado.">
+    <title>FSC — Fernando Sport Center | Entrenamiento Personal y Nutrición</title>
+    <meta name="description" content="Centro de entrenamiento personal, nutrición deportiva y fisioterapia en Madrid. Planes 100% personalizados.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff6b00;
-            --primary-light: #ff8533;
-            --primary-dark: #cc5500;
-            --accent: #00ff88;
+            --green: #00C853;
+            --green-light: #39FF14;
+            --green-dark: #00a844;
+            --green-glow: rgba(0, 200, 83, 0.3);
+            --black: #000000;
             --dark-900: #0a0a0a;
-            --dark-800: #111111;
-            --dark-700: #1a1a1a;
-            --dark-600: #222222;
-            --dark-500: #2a2a2a;
-            --gray-400: #888888;
-            --gray-300: #aaaaaa;
-            --gray-200: #cccccc;
+            --dark-800: #0f0f0f;
+            --dark-700: #161616;
+            --dark-600: #1c1c1c;
+            --dark-500: #262626;
+            --dark-400: #333333;
+            --gray: #888888;
+            --gray-light: #bbbbbb;
             --white: #ffffff;
-            --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-light));
-            --gradient-accent: linear-gradient(135deg, var(--accent), #00cc6a);
-            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
-            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
             --radius: 16px;
             --radius-sm: 8px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--dark-900);
             color: var(--white);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* ===== NAVBAR ===== */
+        /* NAVBAR */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             padding: 1rem 2rem;
-            transition: all 0.3s ease;
-            background: transparent;
+            transition: all 0.3s;
         }
-
         .navbar.scrolled {
-            background: rgba(10, 10, 10, 0.95);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--dark-500);
         }
-
-        .nav-container {
+        .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .nav-logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 900;
-            letter-spacing: -1px;
             color: var(--white);
             text-decoration: none;
+            letter-spacing: -1px;
         }
-
-        .nav-logo span {
-            color: var(--primary);
-        }
-
+        .nav-logo span { color: var(--green); }
         .nav-links {
             display: flex;
-            gap: 2rem;
             list-style: none;
+            gap: 2rem;
             align-items: center;
         }
-
         .nav-links a {
-            color: var(--gray-300);
+            color: var(--gray-light);
             text-decoration: none;
-            font-weight: 500;
             font-size: 0.9rem;
+            font-weight: 500;
             transition: color 0.3s;
         }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-cta {
-            background: var(--gradient-primary);
-            color: var(--white) !important;
-            padding: 0.6rem 1.4rem;
+        .nav-links a:hover { color: var(--green); }
+        .nav-links .btn-nav {
+            background: var(--green);
+            color: var(--black);
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
-            font-weight: 600 !important;
+            font-weight: 700;
         }
-
         .nav-toggle {
             display: none;
             background: none;
@@ -123,83 +95,73 @@
             cursor: pointer;
         }
 
-        /* ===== HERO ===== */
+        /* HERO */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
+            padding: 8rem 2rem 6rem;
             position: relative;
+            text-align: center;
             overflow: hidden;
-            padding: 6rem 2rem 4rem;
         }
-
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 20% 50%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(0, 255, 136, 0.08) 0%, transparent 50%);
-            z-index: 0;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 200, 83, 0.12) 0%, transparent 70%);
+            pointer-events: none;
         }
-
-        .hero-container {
-            max-width: 1200px;
+        .hero-inner {
+            max-width: 800px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
             position: relative;
             z-index: 1;
         }
-
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 107, 0, 0.1);
-            border: 1px solid rgba(255, 107, 0, 0.3);
-            padding: 0.4rem 1rem;
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
             font-size: 0.8rem;
-            color: var(--primary);
+            color: var(--green);
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
-
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 900;
-            line-height: 1.1;
+            line-height: 1.05;
             margin-bottom: 1.5rem;
             letter-spacing: -2px;
         }
-
-        .hero h1 .highlight {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .hero h1 .accent {
+            color: var(--green);
+            text-shadow: 0 0 40px var(--green-glow);
         }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: var(--gray-300);
-            margin-bottom: 2.5rem;
-            max-width: 500px;
-            line-height: 1.8;
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--gray-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .hero-buttons {
+        .hero-btns {
             display: flex;
             gap: 1rem;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
+        /* BUTTONS */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -209,575 +171,330 @@
             font-weight: 700;
             font-size: 0.95rem;
             text-decoration: none;
-            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            transition: all 0.3s;
         }
-
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.3);
+        .btn-green {
+            background: var(--green);
+            color: var(--black);
+            box-shadow: 0 8px 30px rgba(0, 200, 83, 0.3);
         }
-
-        .btn-primary:hover {
+        .btn-green:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(255, 107, 0, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 200, 83, 0.45);
         }
-
         .btn-outline {
             background: transparent;
             color: var(--white);
-            border: 2px solid var(--dark-500);
+            border: 2px solid var(--dark-400);
         }
-
         .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            border-color: var(--green);
+            color: var(--green);
+        }
+        .btn-whatsapp {
+            background: #25d366;
+            color: var(--white);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.4);
         }
 
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-card {
-            background: var(--dark-700);
-            border: 1px solid var(--dark-500);
-            border-radius: var(--radius);
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .hero-card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-card-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.2rem;
-        }
-
-        .hero-card-name {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .hero-card-label {
-            font-size: 0.8rem;
-            color: var(--gray-400);
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .hero-stat {
-            background: var(--dark-600);
-            border-radius: var(--radius-sm);
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .hero-stat-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .hero-stat-label {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-            margin-top: 0.25rem;
-        }
-
-        /* ===== SECTIONS COMMON ===== */
+        /* SECTIONS */
         .section {
             padding: 6rem 2rem;
         }
-
-        .section-container {
+        .section-alt { background: var(--dark-800); }
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 4rem;
         }
-
         .section-tag {
             display: inline-block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--primary);
+            letter-spacing: 3px;
+            color: var(--green);
             margin-bottom: 1rem;
         }
-
         .section-title {
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 900;
             letter-spacing: -1px;
             margin-bottom: 1rem;
         }
-
-        .section-subtitle {
-            color: var(--gray-400);
-            font-size: 1.1rem;
+        .section-sub {
+            color: var(--gray);
+            font-size: 1.05rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* ===== SERVICES ===== */
-        .services {
-            background: var(--dark-800);
+        /* ABOUT */
+        .about-content {
+            max-width: 750px;
+            margin: 0 auto;
+            text-align: center;
         }
+        .about-content p {
+            color: var(--gray-light);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 2rem;
+        }
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--dark-600);
+            border: 1px solid var(--dark-400);
+            padding: 1rem 1.8rem;
+            border-radius: var(--radius-sm);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .google-btn:hover {
+            border-color: var(--green);
+            background: var(--dark-500);
+        }
+        .google-btn i { color: #fbbf24; font-size: 1.2rem; }
 
+        /* SERVICES */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
         }
-
         .service-card {
             background: var(--dark-700);
             border: 1px solid var(--dark-500);
             border-radius: var(--radius);
             padding: 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
-
-        .service-card::before {
+        .service-card::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 3px;
-            background: var(--gradient-primary);
+            background: linear-gradient(90deg, var(--green), var(--green-light));
             opacity: 0;
             transition: opacity 0.3s;
         }
-
         .service-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 107, 0, 0.3);
-            box-shadow: var(--shadow-card);
+            border-color: rgba(0, 200, 83, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
-
-        .service-card:hover::before {
-            opacity: 1;
+        .service-card:hover::after { opacity: 1; }
+        .service-card.featured {
+            border-color: var(--green);
+            background: linear-gradient(180deg, rgba(0, 200, 83, 0.05), var(--dark-700));
         }
-
+        .service-card.featured::after { opacity: 1; }
         .service-icon {
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 12px;
-            background: rgba(255, 107, 0, 0.1);
+            background: rgba(0, 200, 83, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            color: var(--primary);
+            font-size: 1.3rem;
+            color: var(--green);
             margin-bottom: 1.5rem;
         }
-
         .service-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             margin-bottom: 0.75rem;
         }
-
         .service-card p {
-            color: var(--gray-400);
+            color: var(--gray);
             font-size: 0.9rem;
             line-height: 1.7;
         }
-
-        /* ===== PACK/PRICING ===== */
-        .pricing {
-            position: relative;
+        .service-card .badge-featured {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--green);
+            color: var(--black);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            text-transform: uppercase;
         }
 
-        .pricing::before {
+        /* CTA PANEL */
+        .cta-panel {
+            background: var(--green);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-panel::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 107, 0, 0.08), transparent 70%);
-            pointer-events: none;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(0,0,0,0.03) 20px,
+                rgba(0,0,0,0.03) 40px
+            );
         }
-
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        .cta-panel-inner {
             position: relative;
             z-index: 1;
         }
-
-        .pricing-card {
-            background: var(--dark-700);
-            border: 1px solid var(--dark-500);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--primary);
-            background: linear-gradient(180deg, rgba(255, 107, 0, 0.05), var(--dark-700));
-            transform: scale(1.05);
-            box-shadow: 0 20px 60px rgba(255, 107, 0, 0.15);
-        }
-
-        .pricing-badge {
-            display: inline-block;
-            background: var(--gradient-primary);
-            color: var(--white);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .pricing-card .price {
-            font-size: 3rem;
+        .cta-panel h2 {
+            color: var(--black);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             font-weight: 900;
-            color: var(--primary);
-            margin: 1.5rem 0;
+            margin-bottom: 1rem;
         }
-
-        .pricing-card .price span {
-            font-size: 1rem;
-            color: var(--gray-400);
-            font-weight: 400;
+        .cta-panel p {
+            color: rgba(0, 0, 0, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
-
-        .pricing-features {
-            list-style: none;
-            text-align: left;
-            margin: 2rem 0;
-        }
-
-        .pricing-features li {
-            padding: 0.6rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--gray-200);
-        }
-
-        .pricing-features li i {
-            color: var(--accent);
-            font-size: 0.8rem;
-        }
-
-        /* ===== CLIENT PANEL ===== */
-        .panel {
-            background: var(--dark-800);
-        }
-
-        .panel-mockup {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .panel-card {
-            background: var(--dark-700);
-            border: 1px solid var(--dark-500);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-        }
-
-        .panel-card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .panel-card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-
-        .panel-card-icon.weight { background: rgba(0, 255, 136, 0.1); color: var(--accent); }
-        .panel-card-icon.records { background: rgba(255, 107, 0, 0.1); color: var(--primary); }
-        .panel-card-icon.calendar { background: rgba(99, 102, 241, 0.1); color: #818cf8; }
-        .panel-card-icon.routine { background: rgba(236, 72, 153, 0.1); color: #f472b6; }
-
-        .panel-card-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .panel-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            height: 80px;
-            margin-top: 1rem;
-        }
-
-        .panel-bar {
-            flex: 1;
-            background: var(--dark-500);
-            border-radius: 4px;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .panel-bar .fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            border-radius: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .panel-list {
-            list-style: none;
-        }
-
-        .panel-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid var(--dark-500);
-            font-size: 0.85rem;
-        }
-
-        .panel-list li:last-child {
-            border-bottom: none;
-        }
-
-        .panel-list .value {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .panel-appointment {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            background: var(--dark-600);
-            border-radius: var(--radius-sm);
-            margin-bottom: 0.75rem;
-        }
-
-        .panel-appointment-date {
-            text-align: center;
-            min-width: 45px;
-        }
-
-        .panel-appointment-date .day {
-            font-size: 1.3rem;
+        .btn-dark {
+            background: var(--black);
+            color: var(--green);
+            padding: 1.1rem 2.5rem;
+            border-radius: 50px;
             font-weight: 800;
-            color: var(--primary);
-            line-height: 1;
+            font-size: 1.05rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
-
-        .panel-appointment-date .month {
-            font-size: 0.7rem;
-            color: var(--gray-400);
-            text-transform: uppercase;
+        .btn-dark:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
         }
-
-        .panel-appointment-info .title {
-            font-weight: 600;
+        .cta-panel .sub-text {
+            margin-top: 1rem;
             font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.6);
         }
 
-        .panel-appointment-info .time {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-        }
-
-        /* ===== TESTIMONIALS ===== */
+        /* TESTIMONIALS */
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
-
         .testimonial-card {
             background: var(--dark-700);
             border: 1px solid var(--dark-500);
             border-radius: var(--radius);
             padding: 2rem;
         }
-
         .testimonial-stars {
             color: #fbbf24;
             margin-bottom: 1rem;
-            font-size: 0.9rem;
         }
-
         .testimonial-text {
-            color: var(--gray-200);
+            color: var(--gray-light);
             font-size: 0.95rem;
             line-height: 1.8;
-            margin-bottom: 1.5rem;
             font-style: italic;
+            margin-bottom: 1.5rem;
         }
-
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
-
         .testimonial-avatar {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: var(--dark-500);
+            background: rgba(0, 200, 83, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--primary);
+            font-size: 0.85rem;
+            color: var(--green);
         }
+        .testimonial-name { font-weight: 700; font-size: 0.9rem; }
+        .testimonial-info { font-size: 0.8rem; color: var(--gray); }
 
-        .testimonial-name {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .testimonial-role {
-            font-size: 0.8rem;
-            color: var(--gray-400);
-        }
-
-        /* ===== CONTACT / CTA ===== */
-        .contact {
-            background: var(--dark-800);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 400px;
-            background: radial-gradient(ellipse, rgba(255, 107, 0, 0.1), transparent 70%);
-            pointer-events: none;
-        }
-
-        .contact-content {
+        /* CONTACT */
+        .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
-            position: relative;
-            z-index: 1;
         }
-
         .contact-info h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 900;
             margin-bottom: 1rem;
             letter-spacing: -1px;
         }
-
-        .contact-info p {
-            color: var(--gray-400);
+        .contact-info > p {
+            color: var(--gray);
             margin-bottom: 2rem;
             line-height: 1.8;
         }
-
         .contact-methods {
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            margin-bottom: 2rem;
         }
-
         .contact-method {
             display: flex;
             align-items: center;
             gap: 1rem;
-            color: var(--gray-200);
-            font-size: 0.95rem;
+            color: var(--gray-light);
         }
-
         .contact-method i {
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: rgba(255, 107, 0, 0.1);
+            background: rgba(0, 200, 83, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
+            color: var(--green);
         }
-
         .contact-form {
             background: var(--dark-700);
             border: 1px solid var(--dark-500);
             border-radius: var(--radius);
             padding: 2.5rem;
         }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
+        .form-group { margin-bottom: 1.5rem; }
         .form-group label {
             display: block;
             font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--gray-200);
+            color: var(--gray-light);
         }
-
         .form-group input,
         .form-group textarea {
             width: 100%;
@@ -790,43 +507,25 @@
             font-size: 0.9rem;
             transition: border-color 0.3s;
         }
-
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--green);
         }
+        .form-group textarea { resize: vertical; min-height: 100px; }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .btn-whatsapp {
-            background: #25d366;
-            color: var(--white);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-whatsapp:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.4);
-        }
-
-        /* ===== FOOTER ===== */
+        /* FOOTER */
         .footer {
             padding: 3rem 2rem;
             text-align: center;
-            border-top: 1px solid var(--dark-600);
+            border-top: 1px solid var(--dark-500);
         }
-
         .footer-social {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
         .footer-social a {
             width: 44px;
             height: 44px;
@@ -836,540 +535,257 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--gray-300);
+            color: var(--gray-light);
             text-decoration: none;
             transition: all 0.3s;
         }
-
         .footer-social a:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            border-color: var(--green);
+            color: var(--green);
             transform: translateY(-2px);
         }
+        .footer p { color: var(--gray); font-size: 0.85rem; }
 
-        .footer p {
-            color: var(--gray-400);
-            font-size: 0.85rem;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 968px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-subtitle {
-                margin: 0 auto 2.5rem;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .hero-visual {
-                display: none;
-            }
-
-            .contact-content {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing-card.featured {
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: var(--dark-900);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-toggle {
-                display: block;
-                z-index: 1001;
-            }
-
-            .section {
-                padding: 4rem 1.5rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .panel-mockup {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== ANIMATIONS ===== */
+        /* ANIMATIONS */
         .fade-up {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
         }
-
         .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--dark-900); flex-direction: column; justify-content: center; align-items: center; gap: 2rem; z-index: 999; }
+            .nav-links.active { display: flex; }
+            .nav-toggle { display: block; z-index: 1001; }
+            .section { padding: 4rem 1.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .testimonials-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">F<span>SC</span></a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#packs">Packs</a></li>
-                <li><a href="#panel">Tu Panel</a></li>
-                <li><a href="#testimonios">Opiniones</a></li>
-                <li><a href="#contacto" class="nav-cta">Contactar</a></li>
-            </ul>
-            <button class="nav-toggle" id="navToggle" aria-label="Menú">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </nav>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">F<span>SC</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">Centro</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#testimonios">Opiniones</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="cliente.html" class="btn-nav"><i class="fas fa-user"></i> Panel Cliente</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
+    </div>
+</nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <i class="fas fa-bolt"></i> Entrenamiento + Nutrición + Fisio
-                </div>
-                <h1>Transforma tu cuerpo con un plan <span class="highlight">100% personalizado</span></h1>
-                <p class="hero-subtitle">Seguimiento profesional de entrenamiento, nutrición deportiva y fisioterapia. Todo en uno, adaptado a tu objetivo y tu ritmo de vida.</p>
-                <div class="hero-buttons">
-                    <a href="#contacto" class="btn btn-primary">
-                        <i class="fas fa-rocket"></i> Empezar ahora
-                    </a>
-                    <a href="#servicios" class="btn btn-outline">
-                        <i class="fas fa-arrow-down"></i> Ver servicios
-                    </a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-card">
-                    <div class="hero-card-header">
-                        <div class="hero-card-avatar">MR</div>
-                        <div>
-                            <div class="hero-card-name">Marco R.</div>
-                            <div class="hero-card-label">12 semanas de progreso</div>
-                        </div>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <div class="hero-stat-value">-8.5kg</div>
-                            <div class="hero-stat-label">Peso perdido</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat-value">+25kg</div>
-                            <div class="hero-stat-label">Press banca</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat-value">98%</div>
-                            <div class="hero-stat-label">Adherencia</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat-value">4.9★</div>
-                            <div class="hero-stat-label">Satisfacción</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge"><i class="fas fa-bolt"></i> Entrenamiento · Nutrición · Fisioterapia</div>
+        <h1>Tu mejor versión empieza <span class="accent">aquí</span></h1>
+        <p class="hero-sub">Centro de entrenamiento personal, nutrición deportiva y fisioterapia. Planes 100% personalizados, seguimiento real y resultados garantizados.</p>
+        <div class="hero-btns">
+            <a href="#contacto" class="btn btn-green"><i class="fas fa-rocket"></i> Empezar ahora</a>
+            <a href="#servicios" class="btn btn-outline"><i class="fas fa-arrow-down"></i> Ver servicios</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- SERVICES -->
-    <section class="section services" id="servicios">
-        <div class="section-container">
-            <div class="section-header fade-up">
-                <span class="section-tag">Servicios</span>
-                <h2 class="section-title">Todo lo que necesitas para tu transformación</h2>
-                <p class="section-subtitle">Un enfoque integral que cubre entrenamiento, nutrición y recuperación</p>
+<!-- ABOUT -->
+<section class="section section-alt" id="about">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag">El centro</span>
+            <h2 class="section-title">Fernando Sport Center</h2>
+        </div>
+        <div class="about-content fade-up">
+            <p>En FSC nos dedicamos al entrenamiento personal de calidad, combinando preparación física, nutrición personalizada y fisioterapia deportiva. Cada cliente tiene un plan único, adaptado a sus objetivos, su cuerpo y su estilo de vida. Sin fórmulas genéricas, sin atajos — solo trabajo inteligente y compromiso con tus resultados.</p>
+            <p>Nuestro centro ofrece un espacio privado y exclusivo donde cada sesión es individual, con atención completa y seguimiento continuo de tu evolución.</p>
+            <a href="https://www.google.com/local/place/fid/0xd422cf66ce1c6ff:0x32bfb90c5b8ac906/photosphere?iu=https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid%3DpKRISGAgWKEwejNYuwVqGA%26cb_client%3Dsearch.gws-prod.gps%26yaw%3D84.96561%26pitch%3D0%26thumbfov%3D100%26w%3D0%26h%3D0&ik=CAISFnBLUklTR0FnV0tFd2VqTll1d1ZxR0E%3D&sa=X&ved=2ahUKEwj-pZiA7P-UAxUw3wIHHZXwN-8Qpx96BAgcEBA" class="google-btn" target="_blank" rel="noopener">
+                <i class="fas fa-star"></i>
+                <span>Ver reseñas reales en Google</span>
+                <i class="fas fa-external-link-alt" style="font-size: 0.8rem; opacity: 0.6;"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="servicios">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag">Servicios</span>
+            <h2 class="section-title">Todo lo que necesitas</h2>
+            <p class="section-sub">Un enfoque integral para tu transformación física</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card fade-up">
+                <div class="service-icon"><i class="fas fa-dumbbell"></i></div>
+                <h3>Entrenamiento Personal</h3>
+                <p>Seguimiento de pesos máximos, progresión semanal, rutinas personalizadas y ajustes constantes según tu evolución.</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-dumbbell"></i></div>
-                    <h3>Seguimiento de entrenamiento</h3>
-                    <p>Control detallado de tus pesos máximos por ejercicio, series, repeticiones y progresión semanal. Ves tu evolución en tiempo real.</p>
-                </div>
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-weight-scale"></i></div>
-                    <h3>Seguimiento de peso corporal</h3>
-                    <p>Registro y gráficas de tu evolución de peso. Análisis de tendencias para ajustar tu plan según los resultados reales.</p>
-                </div>
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
-                    <h3>Gestión de citas</h3>
-                    <p>Reserva tus sesiones de entrenamiento, revisiones de dieta o fisioterapia de forma sencilla desde tu panel de cliente.</p>
-                </div>
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-clipboard-list"></i></div>
-                    <h3>Rutinas personalizadas</h3>
-                    <p>Planes de entrenamiento diseñados a medida según tu nivel, disponibilidad y objetivos. Actualizados cada mes.</p>
-                </div>
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-utensils"></i></div>
-                    <h3>Plan de alimentación</h3>
-                    <p>Dieta personalizada con menús semanales, lista de la compra y alternativas. Adaptada a tus gustos y estilo de vida.</p>
-                </div>
-                <div class="service-card fade-up">
-                    <div class="service-icon"><i class="fas fa-hand-holding-medical"></i></div>
-                    <h3>Fisioterapia</h3>
-                    <p>Servicio de fisioterapia deportiva para prevención de lesiones, recuperación y mejora del rendimiento físico.</p>
-                </div>
+            <div class="service-card fade-up">
+                <div class="service-icon"><i class="fas fa-weight-scale"></i></div>
+                <h3>Control Corporal</h3>
+                <p>Mediciones de peso, pliegues, bioimpedancia y composición corporal. Análisis completo de tu evolución mes a mes.</p>
+            </div>
+            <div class="service-card fade-up">
+                <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
+                <h3>Gestión de Bonos y Citas</h3>
+                <p>Reserva de sesiones, control de clases consumidas y gestión de tu bono desde el panel de cliente.</p>
+            </div>
+            <div class="service-card fade-up">
+                <div class="service-icon"><i class="fas fa-utensils"></i></div>
+                <h3>Nutrición y Dieta</h3>
+                <p>Plan nutricional 100% personalizado con menús, lista de la compra y ajustes según tus objetivos y preferencias.</p>
+            </div>
+            <div class="service-card fade-up">
+                <div class="service-icon"><i class="fas fa-hand-holding-medical"></i></div>
+                <h3>Fisioterapia</h3>
+                <p>Servicio de fisioterapia deportiva para prevención, recuperación de lesiones y mejora del rendimiento.</p>
+            </div>
+            <div class="service-card featured fade-up">
+                <span class="badge-featured"><i class="fas fa-fire"></i> Popular</span>
+                <div class="service-icon"><i class="fas fa-trophy"></i></div>
+                <h3>Pack Completo</h3>
+                <p>Entrenamiento + Nutrición + Fisio. La combinación ganadora con precio especial. Todo lo que necesitas en un solo pack.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- PRICING / PACKS -->
-    <section class="section pricing" id="packs">
-        <div class="section-container">
-            <div class="section-header fade-up">
-                <span class="section-tag">Packs</span>
-                <h2 class="section-title">Elige tu plan</h2>
-                <p class="section-subtitle">Opciones flexibles que se adaptan a lo que necesitas</p>
+<!-- CTA PANEL -->
+<section class="cta-panel">
+    <div class="cta-panel-inner">
+        <h2>¿Ya eres cliente? Accede a tu panel personalizado</h2>
+        <p>Consulta tu bono, tus rutinas, tu dieta y tus progresos</p>
+        <a href="cliente.html" class="btn-dark"><i class="fas fa-user-circle"></i> Acceder al Panel de Cliente</a>
+        <p class="sub-text">Visualiza tu evolución, récords, citas y mucho más</p>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonios">
+    <div class="container">
+        <div class="section-header fade-up">
+            <span class="section-tag">Opiniones</span>
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <p class="section-sub">Resultados reales de personas reales</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-text">"En 4 meses he perdido 12kg y me siento más fuerte que nunca. Fernando adapta todo al detalle y el seguimiento es brutal. No hay excusas cuando tienes a alguien así detrás."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">DM</div>
+                    <div><div class="testimonial-name">Daniel Martínez</div><div class="testimonial-info">Pack Completo · 16 semanas</div></div>
+                </div>
             </div>
-            <div class="pricing-cards">
-                <div class="pricing-card fade-up">
-                    <h3>Entrenamiento</h3>
-                    <p style="color: var(--gray-400); font-size: 0.9rem;">Plan de entreno personalizado</p>
-                    <div class="price">45€ <span>/mes</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Rutina personalizada mensual</li>
-                        <li><i class="fas fa-check"></i> Seguimiento de pesos y progresión</li>
-                        <li><i class="fas fa-check"></i> Ajustes semanales</li>
-                        <li><i class="fas fa-check"></i> Chat de soporte</li>
-                        <li><i class="fas fa-check"></i> Acceso al panel de cliente</li>
-                    </ul>
-                    <a href="#contacto" class="btn btn-outline" style="width: 100%; justify-content: center;">Consultar</a>
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-text">"Llevaba años estancado en el gimnasio. Desde que entreno con Fernando he subido 8kg de músculo limpio y mis marcas han subido una barbaridad. El panel de cliente mola mucho."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">JL</div>
+                    <div><div class="testimonial-name">Javier López</div><div class="testimonial-info">Entrenamiento + Nutrición · 8 meses</div></div>
                 </div>
-                <div class="pricing-card featured fade-up">
-                    <span class="pricing-badge"><i class="fas fa-star"></i> Más popular</span>
-                    <h3>Pack Completo</h3>
-                    <p style="color: var(--gray-400); font-size: 0.9rem;">Entreno + Nutrición + Fisio</p>
-                    <div class="price">89€ <span>/mes</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Todo del plan Entrenamiento</li>
-                        <li><i class="fas fa-check"></i> Plan de alimentación personalizado</li>
-                        <li><i class="fas fa-check"></i> 1 sesión de fisioterapia/mes</li>
-                        <li><i class="fas fa-check"></i> Seguimiento de peso semanal</li>
-                        <li><i class="fas fa-check"></i> Revisiones quincenales por videollamada</li>
-                        <li><i class="fas fa-check"></i> Prioridad en citas</li>
-                    </ul>
-                    <a href="#contacto" class="btn btn-primary" style="width: 100%; justify-content: center;">Empezar ahora</a>
-                </div>
-                <div class="pricing-card fade-up">
-                    <h3>Nutrición</h3>
-                    <p style="color: var(--gray-400); font-size: 0.9rem;">Solo plan de alimentación</p>
-                    <div class="price">40€ <span>/mes</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Dieta personalizada</li>
-                        <li><i class="fas fa-check"></i> Menús semanales</li>
-                        <li><i class="fas fa-check"></i> Lista de la compra</li>
-                        <li><i class="fas fa-check"></i> Ajustes según progreso</li>
-                        <li><i class="fas fa-check"></i> Seguimiento de peso</li>
-                    </ul>
-                    <a href="#contacto" class="btn btn-outline" style="width: 100%; justify-content: center;">Consultar</a>
+            </div>
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-text">"Tenía una lesión de rodilla que me impedía hacer pierna. Con la fisio y el entrenamiento adaptado, en 3 meses volví a hacer sentadilla sin dolor. Un crack."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">SR</div>
+                    <div><div class="testimonial-name">Sara Rodríguez</div><div class="testimonial-info">Pack Completo · 12 semanas</div></div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- CLIENT PANEL -->
-    <section class="section panel" id="panel">
-        <div class="section-container">
-            <div class="section-header fade-up">
-                <span class="section-tag">Tu espacio</span>
-                <h2 class="section-title">Panel de cliente</h2>
-                <p class="section-subtitle">Todo tu progreso y planes en un mismo lugar, accesible desde el móvil</p>
+<!-- CONTACT -->
+<section class="section section-alt" id="contacto">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info fade-up">
+                <span class="section-tag">Contacto</span>
+                <h2>¿Listo para empezar?</h2>
+                <p>Escríbeme sin compromiso y hablamos sobre tus objetivos. La primera consulta es gratuita.</p>
+                <div class="contact-methods">
+                    <div class="contact-method"><i class="fab fa-whatsapp"></i><span>+34 600 123 456</span></div>
+                    <div class="contact-method"><i class="fas fa-envelope"></i><span>fernando@fsc-fitness.com</span></div>
+                    <div class="contact-method"><i class="fas fa-map-marker-alt"></i><span>Madrid, España</span></div>
+                </div>
+                <a href="https://wa.me/34600123456?text=Hola%20Fernando!%20Me%20interesa%20info%20sobre%20el%20entrenamiento" class="btn btn-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Escribir por WhatsApp</a>
             </div>
-            <div class="panel-mockup">
-                <!-- Weight progress -->
-                <div class="panel-card fade-up">
-                    <div class="panel-card-header">
-                        <div class="panel-card-icon weight"><i class="fas fa-chart-line"></i></div>
-                        <div class="panel-card-title">Evolución de peso</div>
-                    </div>
-                    <div class="panel-chart">
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:85%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:80%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:72%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:68%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:65%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:60%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:55%; background: var(--gradient-accent);"></div></div>
-                        <div class="panel-bar" style="height:100%"><div class="fill" style="height:52%; background: var(--gradient-accent);"></div></div>
-                    </div>
-                    <p style="text-align: center; color: var(--accent); font-weight: 700; margin-top: 1rem; font-size: 0.85rem;">82.5kg → 74.0kg en 8 semanas</p>
-                </div>
-
-                <!-- Records -->
-                <div class="panel-card fade-up">
-                    <div class="panel-card-header">
-                        <div class="panel-card-icon records"><i class="fas fa-trophy"></i></div>
-                        <div class="panel-card-title">Récords personales</div>
-                    </div>
-                    <ul class="panel-list">
-                        <li><span>Press banca</span> <span class="value">95 kg</span></li>
-                        <li><span>Sentadilla</span> <span class="value">120 kg</span></li>
-                        <li><span>Peso muerto</span> <span class="value">140 kg</span></li>
-                        <li><span>Press militar</span> <span class="value">60 kg</span></li>
-                        <li><span>Dominadas</span> <span class="value">+20 kg</span></li>
-                    </ul>
-                </div>
-
-                <!-- Upcoming appointments -->
-                <div class="panel-card fade-up">
-                    <div class="panel-card-header">
-                        <div class="panel-card-icon calendar"><i class="fas fa-calendar-alt"></i></div>
-                        <div class="panel-card-title">Próximas citas</div>
-                    </div>
-                    <div class="panel-appointment">
-                        <div class="panel-appointment-date">
-                            <div class="day">14</div>
-                            <div class="month">Jun</div>
-                        </div>
-                        <div class="panel-appointment-info">
-                            <div class="title">Revisión de progreso</div>
-                            <div class="time">10:00 - 10:45</div>
-                        </div>
-                    </div>
-                    <div class="panel-appointment">
-                        <div class="panel-appointment-date">
-                            <div class="day">18</div>
-                            <div class="month">Jun</div>
-                        </div>
-                        <div class="panel-appointment-info">
-                            <div class="title">Sesión de fisioterapia</div>
-                            <div class="time">17:30 - 18:15</div>
-                        </div>
-                    </div>
-                    <div class="panel-appointment">
-                        <div class="panel-appointment-date">
-                            <div class="day">21</div>
-                            <div class="month">Jun</div>
-                        </div>
-                        <div class="panel-appointment-info">
-                            <div class="title">Revisión de dieta</div>
-                            <div class="time">11:00 - 11:30</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Current routine -->
-                <div class="panel-card fade-up">
-                    <div class="panel-card-header">
-                        <div class="panel-card-icon routine"><i class="fas fa-list-check"></i></div>
-                        <div class="panel-card-title">Rutina actual — Día A (Pecho/Tríceps)</div>
-                    </div>
-                    <ul class="panel-list">
-                        <li><span>Press banca</span> <span class="value">4×8</span></li>
-                        <li><span>Press inclinado mancuernas</span> <span class="value">3×10</span></li>
-                        <li><span>Aperturas en polea</span> <span class="value">3×12</span></li>
-                        <li><span>Fondos en paralelas</span> <span class="value">3×max</span></li>
-                        <li><span>Extensiones tríceps</span> <span class="value">3×12</span></li>
-                    </ul>
-                </div>
+            <div class="contact-form fade-up">
+                <form id="contactForm">
+                    <div class="form-group"><label>Nombre</label><input type="text" placeholder="Tu nombre" required></div>
+                    <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com" required></div>
+                    <div class="form-group"><label>Mensaje</label><textarea placeholder="Cuéntame tu objetivo..." required></textarea></div>
+                    <button type="submit" class="btn btn-green" style="width:100%;justify-content:center;"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- TESTIMONIALS -->
-    <section class="section" id="testimonios">
-        <div class="section-container">
-            <div class="section-header fade-up">
-                <span class="section-tag">Opiniones</span>
-                <h2 class="section-title">Lo que dicen mis clientes</h2>
-                <p class="section-subtitle">Resultados reales de personas que confiaron en el proceso</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card fade-up">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"En 3 meses he perdido 9kg y he ganado fuerza como nunca. El seguimiento es increíble, Fernando está siempre pendiente y te adapta todo al momento. Lo mejor que he hecho."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">AL</div>
-                        <div>
-                            <div class="testimonial-name">Alejandro L.</div>
-                            <div class="testimonial-role">Pack Completo · 14 semanas</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card fade-up">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Llevaba años entrenando por mi cuenta sin resultados claros. Desde que tengo mi rutina y dieta personalizadas, he subido 5kg de músculo limpio. El panel es súper motivador."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">CR</div>
-                        <div>
-                            <div class="testimonial-name">Carlos R.</div>
-                            <div class="testimonial-role">Plan Entrenamiento · 6 meses</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card fade-up">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Tenía una lesión de hombro que no me dejaba entrenar bien. Con la fisio incluida en el pack + la rutina adaptada, en 2 meses ya estaba al 100%. Un crack Fernando."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">MG</div>
-                        <div>
-                            <div class="testimonial-name">María G.</div>
-                            <div class="testimonial-role">Pack Completo · 10 semanas</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-social">
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <p>&copy; 2025 FSC — Fernando Sport Center. Todos los derechos reservados.</p>
+</footer>
 
-    <!-- CONTACT -->
-    <section class="section contact" id="contacto">
-        <div class="section-container">
-            <div class="contact-content">
-                <div class="contact-info fade-up">
-                    <span class="section-tag">Contacto</span>
-                    <h2>¿Listo para empezar tu transformación?</h2>
-                    <p>Escríbeme sin compromiso y te cuento cómo puedo ayudarte a conseguir tus objetivos. La primera consulta es gratuita.</p>
-                    <div class="contact-methods">
-                        <div class="contact-method">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>+34 600 123 456</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <span>fernando@fscfitness.com</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Madrid, España</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 2rem;">
-                        <a href="https://wa.me/34600123456?text=Hola%20Fernando!%20Me%20interesa%20info%20sobre%20tus%20servicios" class="btn btn-whatsapp" target="_blank" rel="noopener">
-                            <i class="fab fa-whatsapp"></i> Escribir por WhatsApp
-                        </a>
-                    </div>
-                </div>
-                <div class="contact-form fade-up">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" id="name" placeholder="Tu nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="tu@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Mensaje</label>
-                            <textarea id="message" placeholder="Cuéntame tu objetivo y en qué puedo ayudarte..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-paper-plane"></i> Enviar mensaje
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+// Navbar scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-social">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <p>&copy; 2025 FSC Fitness & Nutrición — Fernando. Todos los derechos reservados.</p>
-    </footer>
+// Mobile menu
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    const icon = navToggle.querySelector('i');
+    icon.classList.toggle('fa-bars');
+    icon.classList.toggle('fa-times');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        navToggle.querySelector('i').classList.add('fa-bars');
+        navToggle.querySelector('i').classList.remove('fa-times');
+    });
+});
 
-    <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+// Scroll animations
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-        // Mobile menu toggle
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            const icon = navToggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
-
-        // Close mobile menu on link click
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = navToggle.querySelector('i');
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            });
-        });
-
-        // Fade-up animations on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-        // Form submission (visual feedback only)
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> ¡Mensaje enviado!';
-            btn.style.background = 'var(--accent)';
-            btn.style.color = '#000';
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.style.background = '';
-                btn.style.color = '';
-                e.target.reset();
-            }, 3000);
-        });
-    </script>
+// Form
+document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> ¡Enviado!';
+    btn.style.background = 'var(--green-dark)';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; e.target.reset(); }, 3000);
+});
+</script>
 </body>
 </html>

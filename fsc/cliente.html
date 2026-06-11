@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel — FSC Fernando Sport Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --green: #00C853;
+            --green-light: #39FF14;
+            --green-dark: #00a844;
+            --green-glow: rgba(0, 200, 83, 0.3);
+            --black: #000000;
+            --dark-900: #0a0a0a;
+            --dark-800: #0f0f0f;
+            --dark-700: #161616;
+            --dark-600: #1c1c1c;
+            --dark-500: #262626;
+            --dark-400: #333333;
+            --gray: #888888;
+            --gray-light: #bbbbbb;
+            --white: #ffffff;
+            --red: #ff4444;
+            --amber: #ffab00;
+            --blue: #448aff;
+            --radius: 16px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-900);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--dark-800);
+            border-bottom: 1px solid var(--dark-500);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--white);
+            text-decoration: none;
+        }
+        .header-logo span { color: var(--green); }
+        .header-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--dark-400);
+            transition: all 0.3s;
+        }
+        .header-back:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* MAIN */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* WELCOME */
+        .welcome {
+            margin-bottom: 2rem;
+        }
+        .welcome h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+        }
+        .welcome h1 .wave { display: inline-block; animation: wave 2s infinite; transform-origin: 70% 70%; }
+        @keyframes wave {
+            0%, 100% { transform: rotate(0); }
+            10%, 30% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            40% { transform: rotate(-4deg); }
+            50%, 100% { transform: rotate(0); }
+        }
+        .welcome .date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* SUMMARY CARDS */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .summary-card {
+            background: var(--dark-700);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .summary-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-card .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--green);
+        }
+        .summary-card .label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* SECTIONS */
+        .panel-section {
+            margin-bottom: 3rem;
+        }
+        .panel-section-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .panel-section-title i {
+            color: var(--green);
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--dark-700);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        /* BONO */
+        .bono-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .bono-type {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .bono-count {
+            font-size: 0.9rem;
+            color: var(--gray-light);
+        }
+        .progress-bar {
+            height: 12px;
+            background: var(--dark-500);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+        .progress-fill.danger { background: linear-gradient(90deg, var(--red), #ff6666); }
+        .progress-fill.ok { background: linear-gradient(90deg, var(--green), var(--green-light)); }
+        .bono-alert {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            color: #ff8888;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-green {
+            background: var(--green);
+            color: var(--black);
+        }
+        .btn-green:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3); }
+
+        /* CITAS */
+        .appointment-next {
+            background: rgba(0, 200, 83, 0.05);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .appointment-date {
+            text-align: center;
+            min-width: 55px;
+        }
+        .appointment-date .day {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 1;
+        }
+        .appointment-date .month {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .appointment-details .title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .appointment-details .time {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        .badge-next {
+            background: var(--green);
+            color: var(--black);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            margin-left: auto;
+        }
+        .history-list { list-style: none; }
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--dark-500);
+            font-size: 0.9rem;
+        }
+        .history-item:last-child { border-bottom: none; }
+        .history-item .check { color: var(--green); }
+        .history-item .date-text { color: var(--gray-light); }
+        .history-item .status { margin-left: auto; font-size: 0.8rem; color: var(--green); font-weight: 600; }
+
+        /* RUTINA */
+        .routine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .routine-card {
+            background: var(--dark-600);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+        }
+        .routine-day {
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--green);
+            margin-bottom: 0.25rem;
+        }
+        .routine-focus {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        .routine-exercises { list-style: none; }
+        .routine-exercises li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--dark-500);
+        }
+        .routine-exercises li:last-child { border-bottom: none; }
+        .routine-exercises .sets { color: var(--green); font-weight: 600; }
+
+        /* DIETA */
+        .diet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .diet-meal {
+            background: var(--dark-600);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+        }
+        .diet-meal-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .diet-meal-items {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--gray-light);
+        }
+        .diet-meal-items li {
+            padding: 0.25rem 0;
+        }
+        .macros-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .macro-item {
+            flex: 1;
+            min-width: 120px;
+            background: var(--dark-600);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            text-align: center;
+        }
+        .macro-item .macro-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+        .macro-item .macro-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+        .macro-item.protein .macro-value { color: #ff6b6b; }
+        .macro-item.carbs .macro-value { color: var(--amber); }
+        .macro-item.fat .macro-value { color: var(--blue); }
+        .macro-item.kcal .macro-value { color: var(--green); }
+
+        /* PR TABLE */
+        .pr-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pr-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            border-bottom: 1px solid var(--dark-500);
+        }
+        .pr-table td {
+            padding: 0.85rem 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--dark-500);
+        }
+        .pr-table tr:last-child td { border-bottom: none; }
+        .pr-table .weight { color: var(--green); font-weight: 700; }
+        .pr-table .date { color: var(--gray); font-size: 0.85rem; }
+
+        /* BODY COMP */
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .comp-card {
+            background: var(--dark-600);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .comp-card .comp-icon {
+            font-size: 1.2rem;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+        .comp-card .comp-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+        .comp-card .comp-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        .pliegues-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-light);
+        }
+        .pliegues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .pliegue-item {
+            background: var(--dark-600);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        .pliegue-item .val {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        /* CHART */
+        .chart-container {
+            background: var(--dark-700);
+            border: 1px solid var(--dark-500);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+        .chart-canvas {
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main { padding: 1.5rem; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .routine-grid { grid-template-columns: 1fr; }
+            .diet-grid { grid-template-columns: 1fr; }
+            .comp-grid { grid-template-columns: repeat(2, 1fr); }
+            .pliegues-grid { grid-template-columns: repeat(2, 1fr); }
+            .appointment-next { flex-wrap: wrap; }
+            .badge-next { margin-left: 0; }
+            .welcome h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-inner">
+        <a href="index.html" class="header-logo">F<span>SC</span></a>
+        <a href="index.html" class="header-back"><i class="fas fa-arrow-left"></i> Volver a inicio</a>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- WELCOME -->
+    <div class="welcome">
+        <h1>Hola, Alberto <span class="wave">👋</span></h1>
+        <p class="date" id="currentDate"></p>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="icon">🎟️</div>
+            <div class="value">1</div>
+            <div class="label">Clases restantes</div>
+        </div>
+        <div class="summary-card">
+            <div class="icon">⚖️</div>
+            <div class="value">82.4kg</div>
+            <div class="label">Último peso</div>
+        </div>
+        <div class="summary-card">
+            <div class="icon">🏋️</div>
+            <div class="value">140kg</div>
+            <div class="label">PR Peso Muerto</div>
+        </div>
+        <div class="summary-card">
+            <div class="icon">📅</div>
+            <div class="value">15 Jul</div>
+            <div class="label">Próxima cita</div>
+        </div>
+    </div>
+
+    <!-- BONO -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-ticket-alt"></i> Mi Bono</h2>
+        <div class="card">
+            <div class="bono-info">
+                <span class="bono-type">Bono 10 sesiones</span>
+                <span class="bono-count">9 de 10 consumidas</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill danger" style="width: 90%"></div>
+            </div>
+            <div class="bono-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>¡Solo te queda 1 clase! Renueva tu bono pronto</span>
+            </div>
+            <a href="https://wa.me/34600123456?text=Hola%20Fernando!%20Quiero%20reservar%20mi%20pr%C3%B3xima%20sesi%C3%B3n" class="btn btn-green" target="_blank" rel="noopener">
+                <i class="fas fa-calendar-plus"></i> Reservar mi próxima sesión
+            </a>
+        </div>
+    </section>
+
+    <!-- CITAS -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-calendar-alt"></i> Mis Citas</h2>
+        <div class="card">
+            <div class="appointment-next">
+                <div class="appointment-date">
+                    <div class="day">15</div>
+                    <div class="month">Jul</div>
+                </div>
+                <div class="appointment-details">
+                    <div class="title">Sesión de entrenamiento</div>
+                    <div class="time">Martes, 10:00 — 11:00h</div>
+                </div>
+                <span class="badge-next">Próxima</span>
+            </div>
+            <h4 style="font-size: 0.85rem; color: var(--gray); margin-bottom: 0.75rem; font-weight: 600;">Historial reciente</h4>
+            <ul class="history-list">
+                <li class="history-item">
+                    <i class="fas fa-check-circle check"></i>
+                    <span class="date-text">Martes 8 Jul · 10:00h</span>
+                    <span class="status">✅ Completada</span>
+                </li>
+                <li class="history-item">
+                    <i class="fas fa-check-circle check"></i>
+                    <span class="date-text">Viernes 4 Jul · 17:00h</span>
+                    <span class="status">✅ Completada</span>
+                </li>
+                <li class="history-item">
+                    <i class="fas fa-check-circle check"></i>
+                    <span class="date-text">Martes 1 Jul · 10:00h</span>
+                    <span class="status">✅ Completada</span>
+                </li>
+                <li class="history-item">
+                    <i class="fas fa-check-circle check"></i>
+                    <span class="date-text">Viernes 27 Jun · 17:00h</span>
+                    <span class="status">✅ Completada</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- RUTINA -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-dumbbell"></i> Mi Rutina Actual</h2>
+        <div class="routine-grid">
+            <div class="routine-card">
+                <div class="routine-day">Lunes</div>
+                <div class="routine-focus">Pecho y Tríceps</div>
+                <ul class="routine-exercises">
+                    <li><span>Press banca</span><span class="sets">4×8</span></li>
+                    <li><span>Aperturas mancuerna</span><span class="sets">3×12</span></li>
+                    <li><span>Press inclinado</span><span class="sets">3×10</span></li>
+                    <li><span>Fondos en paralelas</span><span class="sets">3×max</span></li>
+                    <li><span>Extensiones tríceps polea</span><span class="sets">3×12</span></li>
+                    <li><span>Press francés</span><span class="sets">3×10</span></li>
+                </ul>
+            </div>
+            <div class="routine-card">
+                <div class="routine-day">Miércoles</div>
+                <div class="routine-focus">Espalda y Bíceps</div>
+                <ul class="routine-exercises">
+                    <li><span>Dominadas</span><span class="sets">4×8</span></li>
+                    <li><span>Remo con barra</span><span class="sets">4×8</span></li>
+                    <li><span>Jalón al pecho</span><span class="sets">3×10</span></li>
+                    <li><span>Remo mancuerna</span><span class="sets">3×10</span></li>
+                    <li><span>Curl bíceps barra</span><span class="sets">3×10</span></li>
+                    <li><span>Curl martillo</span><span class="sets">3×12</span></li>
+                </ul>
+            </div>
+            <div class="routine-card">
+                <div class="routine-day">Viernes</div>
+                <div class="routine-focus">Pierna y Hombro</div>
+                <ul class="routine-exercises">
+                    <li><span>Sentadilla</span><span class="sets">4×8</span></li>
+                    <li><span>Prensa</span><span class="sets">3×12</span></li>
+                    <li><span>Peso muerto rumano</span><span class="sets">3×10</span></li>
+                    <li><span>Extensiones cuádriceps</span><span class="sets">3×12</span></li>
+                    <li><span>Press militar</span><span class="sets">4×8</span></li>
+                    <li><span>Elevaciones laterales</span><span class="sets">3×15</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIETA -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-utensils"></i> Mi Plan de Alimentación</h2>
+        <div class="card">
+            <div class="diet-grid">
+                <div class="diet-meal">
+                    <div class="diet-meal-title">🌅 Desayuno</div>
+                    <ul class="diet-meal-items">
+                        <li>Tortita de avena (80g) con plátano</li>
+                        <li>2 huevos revueltos</li>
+                        <li>Café con leche desnatada</li>
+                    </ul>
+                </div>
+                <div class="diet-meal">
+                    <div class="diet-meal-title">🕙 Media mañana</div>
+                    <ul class="diet-meal-items">
+                        <li>Yogur griego natural (150g)</li>
+                        <li>Puñado de nueces (20g)</li>
+                        <li>1 pieza de fruta</li>
+                    </ul>
+                </div>
+                <div class="diet-meal">
+                    <div class="diet-meal-title">🍽️ Comida</div>
+                    <ul class="diet-meal-items">
+                        <li>Pechuga de pollo a la plancha (180g)</li>
+                        <li>Arroz integral (80g en crudo)</li>
+                        <li>Ensalada variada con aceite de oliva</li>
+                    </ul>
+                </div>
+                <div class="diet-meal">
+                    <div class="diet-meal-title">🕔 Merienda</div>
+                    <ul class="diet-meal-items">
+                        <li>Batido de proteína (30g whey)</li>
+                        <li>Tortitas de arroz (2 uds)</li>
+                        <li>Mantequilla de cacahuete (15g)</li>
+                    </ul>
+                </div>
+                <div class="diet-meal">
+                    <div class="diet-meal-title">🌙 Cena</div>
+                    <ul class="diet-meal-items">
+                        <li>Salmón al horno (150g)</li>
+                        <li>Patata asada (200g)</li>
+                        <li>Verduras salteadas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="macros-bar">
+                <div class="macro-item kcal">
+                    <div class="macro-value">2.450</div>
+                    <div class="macro-label">kcal/día</div>
+                </div>
+                <div class="macro-item protein">
+                    <div class="macro-value">185g</div>
+                    <div class="macro-label">Proteína</div>
+                </div>
+                <div class="macro-item carbs">
+                    <div class="macro-value">260g</div>
+                    <div class="macro-label">Carbohidratos</div>
+                </div>
+                <div class="macro-item fat">
+                    <div class="macro-value">72g</div>
+                    <div class="macro-label">Grasas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRs -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-trophy"></i> Mis PRs (Récords Personales)</h2>
+        <div class="card" style="overflow-x: auto;">
+            <table class="pr-table">
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Peso Máximo</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-dumbbell" style="color: var(--green); margin-right: 0.5rem;"></i>Press Banca</td>
+                        <td class="weight">90 kg</td>
+                        <td class="date">10/06/2025</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-dumbbell" style="color: var(--green); margin-right: 0.5rem;"></i>Sentadilla</td>
+                        <td class="weight">120 kg</td>
+                        <td class="date">02/07/2025</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-dumbbell" style="color: var(--green); margin-right: 0.5rem;"></i>Peso Muerto</td>
+                        <td class="weight">140 kg</td>
+                        <td class="date">15/06/2025</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-dumbbell" style="color: var(--green); margin-right: 0.5rem;"></i>Press Militar</td>
+                        <td class="weight">65 kg</td>
+                        <td class="date">28/06/2025</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-dumbbell" style="color: var(--green); margin-right: 0.5rem;"></i>Dominadas</td>
+                        <td class="weight">+20 kg</td>
+                        <td class="date">01/07/2025</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- BODY COMPOSITION -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-body-text"></i><i class="fas fa-chart-pie"></i> Mis Medidas y Composición Corporal</h2>
+        <div class="card">
+            <h4 style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 1.25rem; font-weight: 600;"><i class="fas fa-microchip" style="color: var(--green); margin-right: 0.5rem;"></i>Báscula de Bioimpedancia</h4>
+            <div class="comp-grid">
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-weight-scale"></i></div>
+                    <div class="comp-value">82,4 kg</div>
+                    <div class="comp-label">Peso</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-percent"></i></div>
+                    <div class="comp-value">18,2%</div>
+                    <div class="comp-label">Grasa corporal</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-dumbbell"></i></div>
+                    <div class="comp-value">67,4 kg</div>
+                    <div class="comp-label">Masa muscular</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-droplet"></i></div>
+                    <div class="comp-value">58,3%</div>
+                    <div class="comp-label">Agua corporal</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-bone"></i></div>
+                    <div class="comp-value">3,8 kg</div>
+                    <div class="comp-label">Masa ósea</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-calculator"></i></div>
+                    <div class="comp-value">24,6</div>
+                    <div class="comp-label">IMC</div>
+                </div>
+                <div class="comp-card">
+                    <div class="comp-icon"><i class="fas fa-fire"></i></div>
+                    <div class="comp-value">1.890</div>
+                    <div class="comp-label">Metabolismo basal (kcal)</div>
+                </div>
+            </div>
+
+            <h4 class="pliegues-title"><i class="fas fa-ruler" style="color: var(--green); margin-right: 0.5rem;"></i>Plicometría (medición de pliegues)</h4>
+            <div class="pliegues-grid">
+                <div class="pliegue-item"><span>Pectoral</span><span class="val">8 mm</span></div>
+                <div class="pliegue-item"><span>Abdominal</span><span class="val">14 mm</span></div>
+                <div class="pliegue-item"><span>Muslo</span><span class="val">12 mm</span></div>
+                <div class="pliegue-item"><span>Subescapular</span><span class="val">10 mm</span></div>
+                <div class="pliegue-item"><span>Suprailíaco</span><span class="val">11 mm</span></div>
+            </div>
+            <div style="background: rgba(0,200,83,0.08); border: 1px solid rgba(0,200,83,0.2); border-radius: var(--radius-sm); padding: 1rem; text-align: center;">
+                <span style="color: var(--gray-light); font-size: 0.85rem;">% Grasa estimado por pliegues:</span>
+                <span style="font-size: 1.3rem; font-weight: 800; color: var(--green); margin-left: 0.5rem;">16,8%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVOLUTION CHART -->
+    <section class="panel-section">
+        <h2 class="panel-section-title"><i class="fas fa-chart-line"></i> Mi Evolución</h2>
+        <div class="chart-container">
+            <div class="chart-canvas" id="chartCanvas">
+                <svg class="chart-svg" viewBox="0 0 400 180" preserveAspectRatio="none">
+                    <!-- Grid lines -->
+                    <line x1="0" y1="0" x2="400" y2="0" stroke="#262626" stroke-width="0.5"/>
+                    <line x1="0" y1="45" x2="400" y2="45" stroke="#262626" stroke-width="0.5"/>
+                    <line x1="0" y1="90" x2="400" y2="90" stroke="#262626" stroke-width="0.5"/>
+                    <line x1="0" y1="135" x2="400" y2="135" stroke="#262626" stroke-width="0.5"/>
+                    <line x1="0" y1="180" x2="400" y2="180" stroke="#262626" stroke-width="0.5"/>
+                    <!-- Y-axis labels -->
+                    <text x="5" y="12" fill="#888" font-size="10">86</text>
+                    <text x="5" y="57" fill="#888" font-size="10">84.5</text>
+                    <text x="5" y="102" fill="#888" font-size="10">83</text>
+                    <text x="5" y="147" fill="#888" font-size="10">81.5</text>
+                    <text x="5" y="178" fill="#888" font-size="10">80</text>
+                    <!-- Area fill -->
+                    <path d="M 50,30 L 150,60 L 270,100 L 370,130 L 370,180 L 50,180 Z" fill="url(#greenGradient)" opacity="0.3"/>
+                    <!-- Line -->
+                    <polyline
+                        points="50,30 150,60 270,100 370,130"
+                        fill="none"
+                        stroke="#00C853"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <!-- Dots -->
+                    <circle cx="50" cy="30" r="6" fill="#00C853"/>
+                    <circle cx="50" cy="30" r="3" fill="#0a0a0a"/>
+                    <circle cx="150" cy="60" r="6" fill="#00C853"/>
+                    <circle cx="150" cy="60" r="3" fill="#0a0a0a"/>
+                    <circle cx="270" cy="100" r="6" fill="#00C853"/>
+                    <circle cx="270" cy="100" r="3" fill="#0a0a0a"/>
+                    <circle cx="370" cy="130" r="6" fill="#00C853"/>
+                    <circle cx="370" cy="130" r="3" fill="#0a0a0a"/>
+                    <!-- Labels on dots -->
+                    <text x="50" y="20" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">85 kg</text>
+                    <text x="150" y="50" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">84 kg</text>
+                    <text x="270" y="90" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">83 kg</text>
+                    <text x="370" y="120" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">82.4 kg</text>
+                    <!-- Gradient def -->
+                    <defs>
+                        <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#00C853" stop-opacity="0.4"/>
+                            <stop offset="100%" stop-color="#00C853" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="chart-labels">
+                <span>Marzo</span>
+                <span>Abril</span>
+                <span>Mayo</span>
+                <span>Junio</span>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <span style="font-size: 0.9rem; color: var(--green); font-weight: 700;">↓ -2.6 kg en 4 meses</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+// Set current date
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById('currentDate').textContent =
+    new Date().toLocaleDateString('es-ES', options).replace(/^\w/, c => c.toUpperCase());
+</script>
+</body>
+</html>
